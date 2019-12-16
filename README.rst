@@ -32,8 +32,8 @@ TBD
 Contribute
 ==========
 
-- Issue Tracker: https://github.com/eiffel-community/eiffel-graphql/issues
-- Source Code: https://github.com/eiffel-community/eiffel-graphql
+- Issue Tracker: https://github.com/eiffel-community/eiffel-graphql-api/issues
+- Source Code: https://github.com/eiffel-community/eiffel-graphql-api
 
 Support
 =======
