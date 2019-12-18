@@ -9,6 +9,8 @@ Description
 This is an Eiffel API solution.
 There is also a storage component used to collect events and store them in a MongoDB database in order to do historical lookups of events.
 
+Documentation: https://eiffel-graphql-api.readthedocs.io/en/latest/
+
 
 Features
 ========
