@@ -47,11 +47,11 @@ if __name__ == "__main__":
         "password": os.getenv("RABBITMQ_PASSWORD", None),
         "port": int(os.getenv("RABBITMQ_PORT", "5672")),
         "vhost": os.getenv("RABBITMQ_VHOST", None),
-        "ssl": ssl,
+        "ssl": SSL,
         "queue": os.getenv("RABBITMQ_QUEUE", None),
         "routing_key": "#"
     }
-    SUBSCRIBER = RabbitMQSubscriber(**data)
+    SUBSCRIBER = RabbitMQSubscriber(**DATA)
     SUBSCRIBER.subscribe("*", insert_to_db)
     SUBSCRIBER.start()
 
