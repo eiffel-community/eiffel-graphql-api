@@ -25,7 +25,7 @@ def connect(mock):
     host = os.getenv("MONGODB_HOST", "localhost")
     port = os.getenv("MONGODB_PORT", "27017")
     database_name = os.getenv("DATABASE_NAME", "this_is_not_correct")
-    replicaset = os.getenv("MONGODB_REPLICASET", "rs0")
+    replicaset = os.getenv("MONGODB_REPLICASET") or None
 
     if mock:
         import mongomock
@@ -33,10 +33,8 @@ def connect(mock):
     else:
         mongo_client = pymongo.MongoClient
 
-    if replicaset:
-        CLIENT = mongo_client("mongodb://{}:{}".format(host, port), replicaset="rs0")
-    else:
-        CLIENT = mongo_client("mongodb://{}:{}".format(host, port))
+    CLIENT = mongo_client("mongodb://{}:{}".format(host, port),
+                          replicaset=replicaset)
     DATABASE = CLIENT[database_name]
 
 
