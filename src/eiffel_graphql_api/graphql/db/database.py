@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import os
+import urllib.parse
+
 import pymongo
 
 DATABASE = None
@@ -24,6 +26,8 @@ def connect(mock):
     global DATABASE, CLIENT
     host = os.getenv("MONGODB_HOST", "localhost")
     port = os.getenv("MONGODB_PORT", "27017")
+    username = os.getenv("MONGODB_USERNAME")
+    password = os.getenv("MONGODB_PASSWORD")
     database_name = os.getenv("DATABASE_NAME", "this_is_not_correct")
     replicaset = os.getenv("MONGODB_REPLICASET") or None
 
@@ -33,8 +37,13 @@ def connect(mock):
     else:
         mongo_client = pymongo.MongoClient
 
-    CLIENT = mongo_client("mongodb://{}:{}".format(host, port),
-                          replicaset=replicaset)
+    if username and password:
+        url = "mongodb://{}:{}@{}:{}".format(urllib.parse.quote(username),
+                                             urllib.parse.quote(password),
+                                             host, port)
+    else:
+        url = "mongodb://{}:{}".format(host, port),
+    CLIENT = mongo_client(url, replicaset=replicaset)
     DATABASE = CLIENT[database_name]
 
 
