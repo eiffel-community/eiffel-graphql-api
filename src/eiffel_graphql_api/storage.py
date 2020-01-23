@@ -39,7 +39,7 @@ def insert_to_db(event, context):
 
 if __name__ == "__main__":
     DATABASE = get_database()
-    SSL = os.getenv("RABBITMQ_SSL", "true") == "true"
+    SSL = os.getenv("RABBITMQ_SSL", "false") == "true"
     DATA = {
         "host": os.getenv("RABBITMQ_HOST", "127.0.0.1"),
         "exchange": os.getenv("RABBITMQ_EXCHANGE", "eiffel"),
