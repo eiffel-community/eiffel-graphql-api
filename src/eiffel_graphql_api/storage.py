@@ -19,6 +19,7 @@ import pymongo
 from eiffel_graphql_api.graphql.db.database import get_database
 from eiffellib.subscribers.rabbitmq_subscriber import RabbitMQSubscriber
 
+DATABASE = None
 
 # Set environment variables from rabbitmq secrets in a kubernetes cluster.
 if os.path.isfile("/etc/rabbitmq/password"):
@@ -34,7 +35,15 @@ def insert_to_db(event, context):
     collection = DATABASE[event.meta.type]
     collection.create_index([("meta.id", pymongo.ASCENDING)])
     collection.create_index([("links.target", pymongo.ASCENDING)])
-    collection.insert_one(event.json)
+    doc = event.json
+    doc['_id'] = event.meta.event_id
+    try:
+        collection.insert_one(doc)
+    except pymongo.errors.DuplicateKeyError:
+        print("Event already exists in the database, "
+              "skipping: {}".format(event.json))
+        return False
+    return True
 
 
 if __name__ == "__main__":
