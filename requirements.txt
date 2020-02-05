@@ -15,7 +15,7 @@
 # numpy==1.13.3
 # scipy==1.0
 #
-eiffellib==1.0.2
+eiffellib==1.1.0
 requests==2.22.0
 pymongo==3.9.0
 graphql-core==2.2.1
