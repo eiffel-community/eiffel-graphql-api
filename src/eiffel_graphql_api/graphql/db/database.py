@@ -16,7 +16,6 @@
 """Database handler functions."""
 import os
 import logging
-import time
 import math
 import urllib.parse
 from threading import Lock
@@ -25,8 +24,7 @@ import pymongo
 
 DATABASE = None
 CLIENT = None
-LOCK = Lock()
-LOGGER = logging.getLogger("Database")
+LOGGER = logging.getLogger(__name__)
 RETRY_TIMEOUT = os.getenv("MONGODB_RECONNECT_TIMEOUT") or math.inf
 # pylint: disable=global-statement
 
@@ -68,31 +66,6 @@ def connect(mock):
     LOGGER.info("Connected.")
 
 
-def retry(fixture, timeout, *args, **kwargs):
-    """Retry call to fixture for 'timeout' seconds.
-
-    :param fixture: Fixture to call upon.
-    :type fixture: :obj:`func`
-    :param timeout: How long to wait for fixture to succeed. In seconds.
-    :type timeout: float
-    :param args: Positional argument to pass onto fixture.
-    :type args: tuple
-    :param kwargs: Keyword arguments to pass onto fixture.
-    :type kwargs: dict
-    """
-    end = time.time() + timeout
-    while time.time() < end:
-        try:
-            fixture(*args, **kwargs)
-            break
-        except Exception as exception:  # pylint:disable=broad-except
-            LOGGER.warning("%r", exception)
-            LOGGER.warning("Retrying %r", fixture)
-            time.sleep(0.1)
-    else:
-        raise TimeoutError("Timeout after %rs calling fixture %r" % (timeout, fixture))
-
-
 def get_database(mock=False):
     """Create and wait for a database connection.
 
@@ -101,9 +74,8 @@ def get_database(mock=False):
     :return: Database instance.
     :rtype: :obj:`pymongo.MongoClient.collection`
     """
-    global DATABASE
     if DATABASE is None:
-        retry(connect, float(RETRY_TIMEOUT), mock)
+        connect(mock)
     return DATABASE
 
 
@@ -115,9 +87,8 @@ def get_client(mock=False):
     :return: Client instance.
     :rtype: :obj:`pymongo.MongoClient`
     """
-    global CLIENT
     if CLIENT is None:
-        retry(connect, float(RETRY_TIMEOUT), mock)
+        connect(mock)
     return CLIENT
 
 
@@ -131,13 +102,9 @@ def insert_to_db(event, _=None):
     :return: Whether or not database insertion succeeded.
     :rtype: bool
     """
-    global DATABASE
-    if DATABASE is None:
-        with LOCK:
-            DATABASE = get_database()
-        return False  # Requeue event if DATABASE is not ready.
     try:
-        collection = DATABASE[event.meta.type]
+        database = get_database()
+        collection = database[event.meta.type]
         collection.create_index([("meta.id", pymongo.ASCENDING)])
         collection.create_index([("links.target", pymongo.ASCENDING)])
         doc = event.json
@@ -147,9 +114,7 @@ def insert_to_db(event, _=None):
         LOGGER.warning("Event already exists in the database, "
                        "skipping: %r", event.json)
         return True
-    except Exception as exception:  # pylint:disable=broad-except
+    except pymongo.errors.ConnectionFailure as exception:
         LOGGER.warning("%r", exception)
-        with LOCK:
-            DATABASE = None
         return False
     return True
