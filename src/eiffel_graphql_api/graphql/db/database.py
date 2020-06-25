@@ -24,6 +24,7 @@ import pymongo
 
 DATABASE = None
 CLIENT = None
+LOCK = Lock()
 LOGGER = logging.getLogger(__name__)
 RETRY_TIMEOUT = os.getenv("MONGODB_RECONNECT_TIMEOUT") or math.inf
 # pylint: disable=global-statement
@@ -57,8 +58,9 @@ def connect(mock):
                                              host, port)
     else:
         url = "mongodb://{}:{}".format(host, port)
-    CLIENT = mongo_client(url, replicaset=replicaset)
-    DATABASE = CLIENT[database_name]
+    with LOCK:
+        CLIENT = mongo_client(url, replicaset=replicaset)
+        DATABASE = CLIENT[database_name]
     # 'server_info' will create a connection against the MongoDB effectively testing
     # the connection for us. This means that the 'connect' method will block until
     # a connection can be established or 'ServerSelectionTimeoutError' is raised.
