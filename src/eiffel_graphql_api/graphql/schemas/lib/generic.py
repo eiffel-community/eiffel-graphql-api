@@ -15,17 +15,18 @@
 # limitations under the License.
 import os
 import re
-import graphene
 import json
-from datetime import datetime
+import graphene
+from .bigint import BigInt
 BASE_JSON = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
     "events/json_schemas"
 )
 
 
-first_capital_re = re.compile('(.)([A-Z][a-z]+)')
-all_capital_re = re.compile('([a-z0-9])([A-Z])')
+FIRST_CAPITAL_RE = re.compile('(.)([A-Z][a-z]+)')
+ALL_CAPITAL_RE = re.compile('([a-z0-9])([A-Z])')
+
 
 def convert(name):
     """Convert a javaCamelCase string to snake_case string.
@@ -37,8 +38,8 @@ def convert(name):
     """
     # Since the first letter is lower-case the 'all_capital' regex won't function properly.
     # So we will instead do the first part separately.
-    string = first_capital_re.sub(r'\1_\2', name)
-    return all_capital_re.sub(r'\1_\2', string).lower()
+    string = FIRST_CAPITAL_RE.sub(r'\1_\2', name)
+    return ALL_CAPITAL_RE.sub(r'\1_\2', string).lower()
 
 
 def load(name):
@@ -130,16 +131,10 @@ def resolvers(graphene_type, data_key):
         """Resolve a graphene key."""
         return info.return_type.graphene_type(self.data.get(data_key))
 
-    def resolve_date(self, info):
-        """Resolve a graphene key as timestamp."""
-        return datetime.fromtimestamp(self.data.get(data_key) / 1000.0)
-
     if graphene_type == graphene.List:
         return resolve_list
     elif graphene_type == graphene.Field:
         return resolve_default
-    elif graphene_type == graphene.DateTime:
-        return resolve_date
     else:
         return resolve_key
 
@@ -306,10 +301,7 @@ def json_schema_to_graphql(name, data, data_dict=None, override_name={}):
         elif value.get("type") == "string":
             generate_simple(key, graphene.String, override_name, data_dict)
         elif value.get("type") == "integer":
-            if key == "time":
-                generate_simple(key, graphene.DateTime, override_name, data_dict)
-            else:
-                generate_simple(key, graphene.Int, override_name, data_dict)
+            generate_simple(key, BigInt, override_name, data_dict)
 
     if data_dict:
         cls = type(name, (graphene.ObjectType,), {
