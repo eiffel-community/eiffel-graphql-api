@@ -58,10 +58,12 @@ class BaseQuery(graphene.ObjectType):
         query = get_database()[collection].find(search)
         if last:
             query.limit(last)
-            query.sort([("_id", -1)])
+            query.sort([("meta.time", -1)])
         elif first:
             query.limit(first)
-            query.sort([("_id", 1)])
+            query.sort([("meta.time", 1)])
+        else:
+            query.sort([("meta.time", -1)])
         return [obj(mongo) for mongo in query]
 
 
