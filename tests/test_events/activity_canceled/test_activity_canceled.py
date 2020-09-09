@@ -118,4 +118,4 @@ class TestActivityCanceled(TestCase):
         self.assertEqual(meta.get("version"), "3.0.0")
         self.assertEqual(meta.get("type"), "EiffelActivityCanceledEvent")
         self.assertEqual(meta.get("id"), "6a1abb6e-2c13-4a82-8fe2-012f8fe7c541")
-        self.assertEqual(meta.get("time"), "2019-12-10T08:32:35.892000")
+        self.assertEqual(meta.get("time"), 1575963155892)

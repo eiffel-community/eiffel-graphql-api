@@ -128,7 +128,7 @@ class TestActivityTriggered(TestCase):
         self.assertEqual(meta.get("version"), "3.0.0")
         self.assertEqual(meta.get("type"), "EiffelActivityTriggeredEvent")
         self.assertEqual(meta.get("id"), "6a1abb6e-2c13-4a82-8fe2-012f8fe7c541")
-        self.assertEqual(meta.get("time"), "2019-12-09T13:43:57.093000")
+        self.assertEqual(meta.get("time"), 1575895437093)
 
     def test_activity_triggered_links(self):
         """Test that it is possible to query 'links' from activity triggered.

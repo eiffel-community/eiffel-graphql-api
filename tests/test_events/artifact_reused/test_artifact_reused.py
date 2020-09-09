@@ -136,4 +136,4 @@ class TestArtifactReused(TestCase):
         self.assertEqual(meta.get("version"), "3.0.0")
         self.assertEqual(meta.get("type"), "EiffelArtifactReusedEvent")
         self.assertEqual(meta.get("id"), "0284875e-4f2f-4589-b6df-797afb039b88")
-        self.assertEqual(meta.get("time"), "2019-12-10T14:38:34.977000")
+        self.assertEqual(meta.get("time"), 1575985114977)

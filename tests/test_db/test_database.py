@@ -17,24 +17,23 @@
 
 from eiffellib.events.eiffel_composition_defined_event import EiffelCompositionDefinedEvent
 
-from eiffel_graphql_api import storage
-from eiffel_graphql_api.graphql.db.database import get_database
+from eiffel_graphql_api.graphql.db import database
 
 
-def test_storage_insert_single_doc():
-    storage.DATABASE = get_database(True)
+def test_insert_single_doc_inserts_doc(mock_mongo):
     event = EiffelCompositionDefinedEvent()
 
-    assert storage.insert_to_db(event, None)
-    collection = storage.DATABASE[event.meta.type]
-    result = collection.find_one({"_id": event.meta.event_id})
+    assert database.insert_to_db(event, None)
+    result = mock_mongo[event.meta.type].find_one({"_id": event.meta.event_id})
     del result["_id"]
     assert result == event.json
 
 
-def test_storage_ignores_duplicate_ids():
-    storage.DATABASE = get_database(True)
+def test_insert_single_doc_ignores_duplicate_ids(mock_mongo):
     event = EiffelCompositionDefinedEvent()
+    collection = mock_mongo[event.meta.type]
 
-    assert storage.insert_to_db(event, None)
-    assert not storage.insert_to_db(event, None)
+    assert database.insert_to_db(event, None)
+    assert collection.count_documents({}) == 1
+    assert database.insert_to_db(event, None)
+    assert collection.count_documents({}) == 1

@@ -157,4 +157,4 @@ class TestActivityFinished(TestCase):
         self.assertEqual(meta.get("version"), "3.0.0")
         self.assertEqual(meta.get("type"), "EiffelActivityFinishedEvent")
         self.assertEqual(meta.get("id"), "bc73b474-4f5c-4931-b7d5-8588d0a6534a")
-        self.assertEqual(meta.get("time"), "2019-12-10T09:09:47.254000")
+        self.assertEqual(meta.get("time"), 1575965387254)

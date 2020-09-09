@@ -74,7 +74,7 @@ def get_database(mock=False):
     :param mock: Whether the server should be mocked or not. Used for tests.
     :type mock: bool
     :return: Database instance.
-    :rtype: :obj:`pymongo.MongoClient.collection`
+    :rtype: :obj:`pymongo.database.Database`
     """
     if DATABASE is None:
         connect(mock)
