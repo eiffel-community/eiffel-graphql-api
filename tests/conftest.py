@@ -18,8 +18,18 @@ import os
 import threading
 import pytest
 from eiffel_graphql_api.graphql.api import APP
+from eiffel_graphql_api.graphql.db.database import get_database
 from eiffel_graphql_api.graphql.db.database import get_client
 
+
+@pytest.fixture
+def mock_mongo():
+    """Inject a MongoDB client connected to a mock server with no database
+    in place, guaranteeing that we'll start from a clean slate.
+    """
+    client = get_client(mock=True)
+    client.drop_database(os.getenv("DATABASE_NAME"))
+    yield get_database(mock=True)
 
 
 def start():

@@ -129,4 +129,4 @@ class TestArtifactPublished(TestCase):
         self.assertEqual(meta.get("version"), "3.0.0")
         self.assertEqual(meta.get("type"), "EiffelArtifactPublishedEvent")
         self.assertEqual(meta.get("id"), "031c2f9a-92f0-4cac-9320-e0113adafd7d")
-        self.assertEqual(meta.get("time"), "2019-12-10T13:34:15.471000")
+        self.assertEqual(meta.get("time"), 1575981255471)

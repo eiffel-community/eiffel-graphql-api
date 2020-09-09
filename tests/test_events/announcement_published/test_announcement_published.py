@@ -135,4 +135,4 @@ class TestAnnouncementPublished(TestCase):
         self.assertEqual(meta.get("version"), "3.0.0")
         self.assertEqual(meta.get("type"), "EiffelAnnouncementPublishedEvent")
         self.assertEqual(meta.get("id"), "4baf56e6-404a-4132-a28b-9ed782f26293")
-        self.assertEqual(meta.get("time"), "2019-12-10T09:34:25.708000")
+        self.assertEqual(meta.get("time"), 1575966865708)
