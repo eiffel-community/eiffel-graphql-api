@@ -41,5 +41,5 @@ Support
 =======
 
 If you are having issues, please let us know.
-There is a mailing list at: eiffel-pythonlib-maintainers@google-groups.com
+There is a mailing list at: eiffel-graphql-api-maintainers@googlegroups.com
 or just write an Issue.
