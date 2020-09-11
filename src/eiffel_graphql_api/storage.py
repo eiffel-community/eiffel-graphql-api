@@ -24,6 +24,7 @@ from eiffel_graphql_api.graphql.db.database import insert_to_db
 from eiffel_graphql_api import __version__
 
 LOGGER = logging.getLogger(__name__)
+# Testing the tox action.
 
 # Set environment variables from rabbitmq secrets in a kubernetes cluster.
 if os.path.isfile("/etc/rabbitmq/password"):
