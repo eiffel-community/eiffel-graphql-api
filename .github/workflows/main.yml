@@ -24,5 +24,7 @@ jobs:
           python-version: 3.5
       - name: Install Tox
         run: pip install tox
+      - name: Upgrade setuptools
+        run: pip install -U setuptools
       - name: Run Tox
         run: tox
