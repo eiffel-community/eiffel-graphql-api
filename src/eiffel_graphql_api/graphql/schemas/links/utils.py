@@ -1,4 +1,4 @@
-# Copyright 2019 Axis Communications AB.
+# Copyright 2019-2020 Axis Communications AB.
 #
 # For a full list of individual contributors, please see the commit history.
 #
@@ -13,6 +13,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""Eiffel link table, connecting eiffel link names with objects."""
+# pylint: disable=wildcard-import, unused-wildcard-import
 from .activity_execution import ActivityExecution, PreviousActivityExecution
 from .artifact import Artifact, ArtifactPreviousVersion, ReusedArtifact
 from .cause import Cause
@@ -22,16 +24,15 @@ from .context import Context
 from .element import Element
 from .environment import Environment, EnvironmentPreviousVersion
 from .flow_context import FlowContext
-from .modified_announcement import ModifiedAnnouncement
-from .subject import Subject
 from .issues import *
 from .iut import IUT
-from .verification_basis import VerificationBasis
+from .modified_announcement import ModifiedAnnouncement
 from .source_change_base import *
+from .subject import Subject
+from .tercc import Tercc
 from .test_case_execution import *
 from .test_suite_execution import *
-from .tercc import Tercc
-
+from .verification_basis import VerificationBasis
 
 LINKS = {
     "CONTEXT": Context,
@@ -41,11 +42,13 @@ LINKS = {
     "PREVIOUS_ACTIVITY_EXECUTION": PreviousActivityExecution,
     "MODIFIED_ANNOUNCEMENT": ModifiedAnnouncement,
     "COMPOSITION": Composition,
-    "PREVIOUS_VERSION": {"EiffelArtifactCreatedEvent": ArtifactPreviousVersion,
-                         "EiffelCompositionDefinedEvent": CompositionPreviousVersion,
-                         "EiffelEnvironmentDefinedEvent": EnvironmentPreviousVersion,
-                         "EiffelSourceChangeCreatedEvent": SourceCreatedPreviousVersion,
-                         "EiffelSourceChangeSubmittedEvent": SourceSubmittedPreviousVersion},
+    "PREVIOUS_VERSION": {
+        "EiffelArtifactCreatedEvent": ArtifactPreviousVersion,
+        "EiffelCompositionDefinedEvent": CompositionPreviousVersion,
+        "EiffelEnvironmentDefinedEvent": EnvironmentPreviousVersion,
+        "EiffelSourceChangeCreatedEvent": SourceCreatedPreviousVersion,
+        "EiffelSourceChangeSubmittedEvent": SourceSubmittedPreviousVersion,
+    },
     "ENVIRONMENT": Environment,
     "ARTIFACT": Artifact,
     "REUSED_ARTIFACT": ReusedArtifact,

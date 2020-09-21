@@ -1,4 +1,4 @@
-# Copyright 2019 Axis Communications AB.
+# Copyright 2019-2020 Axis Communications AB.
 #
 # For a full list of individual contributors, please see the commit history.
 #
@@ -13,13 +13,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from pkg_resources import get_distribution, DistributionNotFound
+"""Package resources with distribution name and version."""
+from pkg_resources import DistributionNotFound, get_distribution
 
+# pylint:disable=invalid-name
 try:
     # Change here if project is renamed and does not equal the package name
-    dist_name = 'eiffel-graphql-api'
+    dist_name = "eiffel-graphql-api"
     __version__ = get_distribution(dist_name).version
 except DistributionNotFound:
-    __version__ = 'unknown'
+    __version__ = "unknown"
 finally:
     del get_distribution, DistributionNotFound

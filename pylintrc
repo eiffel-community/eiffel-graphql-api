@@ -1,0 +1,4 @@
+[messages control]
+disable=
+    duplicate-code,
+    cyclic-import

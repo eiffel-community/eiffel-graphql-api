@@ -1,4 +1,4 @@
-# Copyright 2019 Axis Communications AB.
+# Copyright 2019-2020 Axis Communications AB.
 #
 # For a full list of individual contributors, please see the commit history.
 #
@@ -13,18 +13,26 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""Eiffel element link."""
 import graphene
-from ..utils import search, find_type
+
+from ..utils import find_type, search
 
 
 class Element(graphene.ObjectType):
+    """Element link."""
+
     link = graphene.Field("eiffel_graphql_api.graphql.schemas.union.EiffelElementUnion")
 
     def __init__(self, link):
+        """Initialize link."""
+        # pylint:disable=super-init-not-called
         self.link = link
 
-    def resolve_link(self, info):
-        from ..union import NotFound
+    def resolve_link(self, _):
+        """Resolve element links."""
+        from ..union import NotFound  # pylint:disable=import-outside-toplevel
+
         mongo = search({"meta.id": self.link.get("target")})
         if mongo is None:
             return NotFound(self.link, "Could not find event in database.")

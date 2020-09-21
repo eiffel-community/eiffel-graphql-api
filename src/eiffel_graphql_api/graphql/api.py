@@ -1,4 +1,4 @@
-# Copyright 2019 Axis Communications AB.
+# Copyright 2019-2020 Axis Communications AB.
 #
 # For a full list of individual contributors, please see the commit history.
 #
@@ -13,10 +13,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""Eiffel GraphQL Flask API APP."""
 from flask import Flask
 from flask_graphql import GraphQLView
+
 from .schemas.schema import SCHEMA
 
 APP = Flask(__name__)
 
-APP.add_url_rule("/graphql", view_func=GraphQLView.as_view('graphql', schema=SCHEMA, graphiql=True))
+APP.add_url_rule(
+    "/graphql", view_func=GraphQLView.as_view("graphql", schema=SCHEMA, graphiql=True)
+)

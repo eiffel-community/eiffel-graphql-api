@@ -1,4 +1,4 @@
-# Copyright 2019 Axis Communications AB.
+# Copyright 2019-2020 Axis Communications AB.
 #
 # For a full list of individual contributors, please see the commit history.
 #
@@ -15,13 +15,15 @@
 # limitations under the License.
 """DB Storage tool for eiffel graphql API."""
 import argparse
+import logging
 import os
 import sys
 import time
-import logging
+
 from eiffellib.subscribers.rabbitmq_subscriber import RabbitMQSubscriber
-from eiffel_graphql_api.graphql.db.database import insert_to_db
+
 from eiffel_graphql_api import __version__
+from eiffel_graphql_api.graphql.db.database import insert_to_db
 
 LOGGER = logging.getLogger(__name__)
 
@@ -35,19 +37,21 @@ if os.path.isfile("/etc/rabbitmq/username"):
 
 
 def parse_args(args):
-    """Parse command line parameters
+    """Parse command line parameters.
 
-    :param args: Commandl ine parameters as list of strings.
+    :param args: Command line parameters as list of strings.
     :type args: list
     :return: Command line parameters namespace.
     :rtype: :obj:`argparse.Namespace
     """
     parser = argparse.ArgumentParser(
-        description="Tool for storing eiffel events in a Mongo database.")
+        description="Tool for storing eiffel events in a Mongo database."
+    )
     parser.add_argument(
         "--version",
         action="version",
-        version="eiffel-graphql-storage {ver}".format(ver=__version__))
+        version="eiffel-graphql-storage {ver}".format(ver=__version__),
+    )
     parser.add_argument(
         "-v",
         "--verbose",
@@ -55,19 +59,21 @@ def parse_args(args):
         help="set loglevel to DEBUG",
         action="store_const",
         default=logging.INFO,
-        const=logging.DEBUG)
+        const=logging.DEBUG,
+    )
     return parser.parse_args(args)
 
 
 def setup_logging(loglevel):
-    """Setup basic logging
+    """Set up basic logging.
 
     :param loglevel: Minimum loglevel for emitting messages.
     :type loglevel: int
     """
     logformat = "[%(asctime)s] %(levelname)s:%(message)s"
-    logging.basicConfig(level=loglevel, stream=sys.stdout,
-                        format=logformat, datefmt="%Y-%m-%d %H:%M:%S")
+    logging.basicConfig(
+        level=loglevel, stream=sys.stdout, format=logformat, datefmt="%Y-%m-%d %H:%M:%S"
+    )
 
 
 def main(args):
@@ -89,7 +95,7 @@ def main(args):
         "vhost": os.getenv("RABBITMQ_VHOST", None),
         "ssl": ssl,
         "queue": os.getenv("RABBITMQ_QUEUE", None),
-        "routing_key": "#"
+        "routing_key": "#",
     }
     subscriber = RabbitMQSubscriber(**data)
     subscriber.subscribe("*", insert_to_db, can_nack=True)
@@ -100,8 +106,7 @@ def main(args):
 
 
 def run():
-    """Entry point for console_scripts
-    """
+    """Entry point for console_scripts."""
     main(sys.argv[1:])
 
 

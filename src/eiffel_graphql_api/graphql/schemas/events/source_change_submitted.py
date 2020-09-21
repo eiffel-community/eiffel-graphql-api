@@ -1,4 +1,4 @@
-# Copyright 2019 Axis Communications AB.
+# Copyright 2019-2020 Axis Communications AB.
 #
 # For a full list of individual contributors, please see the commit history.
 #
@@ -13,12 +13,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""Eiffel source change submitted."""
 import graphene
+
 from ..base import EiffelObjectType
 from ..lib.generic import json_schema_to_graphql, load
 
+# pylint: disable=too-few-public-methods
+
 
 class SourceChangeSubmitted(EiffelObjectType):
+    """Source change submitted object type."""
+
     data = json_schema_to_graphql(
         "SourceChangeSubmittedData",
         load("EiffelSourceChangeSubmittedEvent.json").get("data").get("properties"),
@@ -28,14 +34,20 @@ class SourceChangeSubmitted(EiffelObjectType):
             "gitIdentifier": "sourceChangeSubmittedGitIdentifier",
             "hgIdentifier": "sourceChangeSubmittedHgIdentifier",
             "svnIdentifier": "sourceChangeSubmittedSvnIdentifier",
-        }
+        },
     )
     mongo = None
 
     def __init__(self, mongo):
+        """Initialize mongo instance."""
+        # pylint:disable=super-init-not-called
         self.mongo = mongo
 
 
 class SourceChangeSubmittedConnection(graphene.Connection):
+    """Source change submitted connection."""
+
     class Meta:
+        """Graphene meta data."""
+
         node = SourceChangeSubmitted
