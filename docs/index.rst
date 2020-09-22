@@ -14,10 +14,11 @@ Contents
 
    Getting Started <readme>
    Examples <examples>
+   Code rules <coderules>
 
    License <license>
    Authors <authors>
-   Contributing <contributing>
-   Code of conduct <code_of_conduct>
+   Contributing <https://github.com/eiffel-community/.github/blob/master/CONTRIBUTING.md>
+   Code of conduct <https://github.com/eiffel-community/.github/blob/master/CODE_OF_CONDUCT.md>
    Changelog <changelog>
    Module Reference <api/modules>

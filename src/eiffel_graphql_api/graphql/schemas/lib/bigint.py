@@ -13,16 +13,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from graphql.language import ast
+"""Big int extension for graphene."""
 from graphene.types import Scalar
-from graphene.types.scalars import MIN_INT, MAX_INT
+from graphene.types.scalars import MAX_INT, MIN_INT
+from graphql.language import ast
+
 
 class BigInt(Scalar):
+    """BigInt is an extension of the regular Int field.
+
+    BigInt supports Integers bigger than a signed 32-bit integer.
     """
-    BigInt is an extension of the regular Int field
-        that supports Integers bigger than a signed
-        32-bit integer.
-    """
+
     @staticmethod
     def serializer(value):
         """Override the standard serializer to not raise exceptions on MAX_INT."""
@@ -33,8 +35,10 @@ class BigInt(Scalar):
 
     @staticmethod
     def parse_literal(node):
+        """Parse node literal and convert to float if too large."""
         if isinstance(node, ast.IntValue):
             num = int(node.value)
             if num > MAX_INT or num < MIN_INT:
                 return float(int(num))
             return num
+        return None

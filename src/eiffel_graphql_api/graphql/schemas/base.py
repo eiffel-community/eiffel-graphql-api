@@ -1,4 +1,4 @@
-# Copyright 2019 Axis Communications AB.
+# Copyright 2019-2020 Axis Communications AB.
 #
 # For a full list of individual contributors, please see the commit history.
 #
@@ -13,31 +13,56 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from datetime import datetime
+"""Base object type."""
 import graphene
 from graphene import relay
-from .utils import find_type, search, multi_search
+
 from .lib.generic import json_schema_to_graphql, load
+from .utils import find_type, multi_search, search
 
 
 class EiffelObjectType(graphene.ObjectType):
+    """Eiffel event base object type."""
+
     links = graphene.List("eiffel_graphql_api.graphql.schemas.union.EiffelLinkUnion")
-    reverse = relay.ConnectionField("eiffel_graphql_api.graphql.schemas.union.ReverseConnection")
+    reverse = relay.ConnectionField(
+        "eiffel_graphql_api.graphql.schemas.union.ReverseConnection"
+    )
     meta = json_schema_to_graphql(
         "EiffelMeta",
         load("EiffelActivityCanceledEvent.json").get("meta").get("properties"),
     )
+    mongo = None
 
-    def search(self, filter, *args, **kwargs):
+    @staticmethod
+    def search(filter, *args, **kwargs):  # pylint:disable=redefined-builtin
+        """Search for event in DB.
+
+        :param filter: MongoDB filter.
+        :type filter: dict
+        :return: JSON result from database search.
+        :rtype: dict
+        """
         return search(filter, *args, **kwargs)
 
-    def find_type(self, type_name):
+    @staticmethod
+    def find_type(type_name):
+        """Find Eiffel object type from type name.
+
+        :param type_name: Name of type to find.
+        :type type_name: str
+        :return: GraphQL schema for event type.
+        :rtype: :obj:`graphene.ObjectType`
+        """
         return find_type(type_name)
 
-    def resolve_links(self, info):
+    def resolve_links(self, _):
+        """Resolve eiffel links on 'links' GraphQL query."""
+        # pylint:disable=import-outside-toplevel
+        # pylint:disable=unsubscriptable-object
         from .links.utils import LINKS
+
         links = []
-        print(self.mongo)
         for data in self.mongo.get("links", []):
             link = LINKS.get(data["type"])
             if isinstance(link, dict):
@@ -47,14 +72,19 @@ class EiffelObjectType(graphene.ObjectType):
         return links
 
     def resolve_meta(self, info):
+        """Resolve eiffel meta on 'meta' GraphQL query."""
         return info.return_type.graphene_type(self.mongo.get("meta"))
 
     def resolve_data(self, info):
+        """Resolve eiffel data on 'data' GraphQL query."""
         return info.return_type.graphene_type(self.mongo.get("data"))
 
-    def resolve_reverse(self, info):
+    def resolve_reverse(self, _):
+        """Resolve reverse searching for link references."""
         events = []
-        for event in multi_search({"links.target": self.mongo.get("meta", {}).get("id")}):
+        for event in multi_search(
+            {"links.target": self.mongo.get("meta", {}).get("id")}
+        ):
             obj = self.find_type(event["meta"]["type"])(event)
             events.append(obj)
         return events

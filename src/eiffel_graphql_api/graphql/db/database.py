@@ -1,4 +1,4 @@
-# Copyright 2019 Axis Communications AB.
+# Copyright 2019-2020 Axis Communications AB.
 #
 # For a full list of individual contributors, please see the commit history.
 #
@@ -14,9 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """Database handler functions."""
-import os
 import logging
 import math
+import os
 import urllib.parse
 from threading import Lock
 
@@ -48,14 +48,15 @@ def connect(mock):
     if mock:
         # pylint: disable=import-outside-toplevel, import-error
         import mongomock
+
         mongo_client = mongomock.MongoClient
     else:
         mongo_client = pymongo.MongoClient
 
     if username and password:
-        url = "mongodb://{}:{}@{}:{}".format(urllib.parse.quote(username),
-                                             urllib.parse.quote(password),
-                                             host, port)
+        url = "mongodb://{}:{}@{}:{}".format(
+            urllib.parse.quote(username), urllib.parse.quote(password), host, port
+        )
     else:
         url = "mongodb://{}:{}".format(host, port)
     with LOCK:
@@ -110,11 +111,12 @@ def insert_to_db(event, _=None):
         collection.create_index([("meta.id", pymongo.ASCENDING)])
         collection.create_index([("links.target", pymongo.ASCENDING)])
         doc = event.json
-        doc['_id'] = event.meta.event_id
+        doc["_id"] = event.meta.event_id
         collection.insert_one(doc)
     except pymongo.errors.DuplicateKeyError:
-        LOGGER.warning("Event already exists in the database, "
-                       "skipping: %r", event.json)
+        LOGGER.warning(
+            "Event already exists in the database, " "skipping: %r", event.json
+        )
         return True
     except pymongo.errors.ConnectionFailure as exception:
         LOGGER.warning("%r", exception)

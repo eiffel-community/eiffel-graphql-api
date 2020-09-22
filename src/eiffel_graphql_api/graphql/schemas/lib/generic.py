@@ -1,4 +1,4 @@
-# Copyright 2019 Axis Communications AB.
+# Copyright 2019-2020 Axis Communications AB.
 #
 # For a full list of individual contributors, please see the commit history.
 #
@@ -13,19 +13,21 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""Generic utilities for Eiffel GraphQL API."""
+import json
 import os
 import re
-import json
+
 import graphene
+
 from .bigint import BigInt
+
 BASE_JSON = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-    "events/json_schemas"
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "events/json_schemas"
 )
 
-
-FIRST_CAPITAL_RE = re.compile('(.)([A-Z][a-z]+)')
-ALL_CAPITAL_RE = re.compile('([a-z0-9])([A-Z])')
+FIRST_CAPITAL_RE = re.compile("(.)([A-Z][a-z]+)")
+ALL_CAPITAL_RE = re.compile("([a-z0-9])([A-Z])")
 
 
 def convert(name):
@@ -38,8 +40,8 @@ def convert(name):
     """
     # Since the first letter is lower-case the 'all_capital' regex won't function properly.
     # So we will instead do the first part separately.
-    string = FIRST_CAPITAL_RE.sub(r'\1_\2', name)
-    return ALL_CAPITAL_RE.sub(r'\1_\2', string).lower()
+    string = FIRST_CAPITAL_RE.sub(r"\1_\2", name)
+    return ALL_CAPITAL_RE.sub(r"\1_\2", string).lower()
 
 
 def load(name):
@@ -56,7 +58,7 @@ def load(name):
 
 
 def default_init(self, data):
-    """Default __init__ function for the generated ObjectTypes.
+    """Init function to use for generated ObjectTypes.
 
     This default __init__ is required to set the 'data' dictionary
     on all object types.
@@ -79,6 +81,7 @@ class CustomData(graphene.ObjectType):
     Due to graphene not being able to generate multiple objects with the same name, this
     generic CustomData object is created here and used in every event.
     """
+
     key = graphene.String()
     value = graphene.String()
     data = None
@@ -94,6 +97,7 @@ class CustomData(graphene.ObjectType):
                      or just a subset of it. In this case it's the subset for customData.
         :type data: dict
         """
+        # pylint:disable=super-init-not-called
         self.data = data
 
     def resolve_key(self, _):
@@ -117,11 +121,15 @@ def resolvers(graphene_type, data_key):
     :return: Resolver function for the graphene type.
     :rtype: function
     """
+
     def resolve_list(self, info):
         """Resolve a graphene list."""
-        return [info.return_type.of_type.graphene_type(data) for data in self.data.get(data_key, [])]
+        return [
+            info.return_type.of_type.graphene_type(data)
+            for data in self.data.get(data_key, [])
+        ]
 
-    def resolve_key(self, info):
+    def resolve_key(self, _):
         """Resolve a graphene dictionary."""
         if isinstance(self.data, dict):
             return self.data.get(data_key)
@@ -131,12 +139,12 @@ def resolvers(graphene_type, data_key):
         """Resolve a graphene key."""
         return info.return_type.graphene_type(self.data.get(data_key))
 
+    _type = resolve_key
     if graphene_type == graphene.List:
-        return resolve_list
+        _type = resolve_list
     elif graphene_type == graphene.Field:
-        return resolve_default
-    else:
-        return resolve_key
+        _type = resolve_default
+    return _type
 
 
 def array_value(value):
@@ -261,7 +269,7 @@ def generate_object(key, value, override_name, data_dict):
 
 
 def generate_simple(key, graphene_type, override_name, data_dict):
-    """Simple resolver.
+    """Resolve simple keys.
 
     Will just create a graphene simple type and add a resolver to it.
 
@@ -282,7 +290,9 @@ def generate_simple(key, graphene_type, override_name, data_dict):
     data_dict["resolve_{}".format(attribute_name)] = resolvers(graphene_type, key)
 
 
-def json_schema_to_graphql(name, data, data_dict=None, override_name={}):
+def json_schema_to_graphql(
+    name, data, data_dict=None, override_name={}
+):  # pylint:disable=dangerous-default-value
     """Resolve an Eiffel JSONSchema and generate a GraphQL queryable structure.
 
     This function is quite complex in that it, in runtime, generates python objects
@@ -304,8 +314,8 @@ def json_schema_to_graphql(name, data, data_dict=None, override_name={}):
             generate_simple(key, BigInt, override_name, data_dict)
 
     if data_dict:
-        cls = type(name, (graphene.ObjectType,), {
-            "__init__": default_init,
-            **data_dict
-        })
+        cls = type(
+            name, (graphene.ObjectType,), {"__init__": default_init, **data_dict}
+        )
         return graphene.Field(cls)
+    return None

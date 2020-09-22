@@ -1,4 +1,4 @@
-# Copyright 2019 Axis Communications AB.
+# Copyright 2019-2020 Axis Communications AB.
 #
 # For a full list of individual contributors, please see the commit history.
 #
@@ -13,24 +13,39 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""Eiffel Artifact links."""
 import graphene
+
 from eiffel_graphql_api.graphql.schemas.events import ArtifactCreated
+
 from ..utils import find_one
 
 
 class Artifact(graphene.ObjectType):
+    """Artifact link."""
+
     artifact_created = graphene.Field(ArtifactCreated)
 
     def __init__(self, link):
+        """Initialize link."""
+        # pylint:disable=super-init-not-called
         self.link = link
 
-    def resolve_artifact_created(self, info):
-        from ..union import NotFound
-        event = find_one("EiffelArtifactCreatedEvent", {"meta.id": self.link.get("target")})
+    def resolve_artifact_created(self, _):
+        """Resolve artifact created link."""
+        from ..union import NotFound  # pylint:disable=import-outside-toplevel
+
+        event = find_one(
+            "EiffelArtifactCreatedEvent", {"meta.id": self.link.get("target")}
+        )
         if event is None:
             return NotFound(self.link, "Could not find event in database.")
         return ArtifactCreated(event)
 
 
-class ReusedArtifact(Artifact): pass
-class ArtifactPreviousVersion(Artifact): pass
+class ReusedArtifact(Artifact):
+    """Reused artifact link."""
+
+
+class ArtifactPreviousVersion(Artifact):
+    """Previous artifact version link."""
