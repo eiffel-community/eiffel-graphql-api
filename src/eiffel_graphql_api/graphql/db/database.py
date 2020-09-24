@@ -30,6 +30,10 @@ RETRY_TIMEOUT = os.getenv("MONGODB_RECONNECT_TIMEOUT") or math.inf
 # pylint: disable=global-statement
 
 
+class ConfigurationError(Exception):
+    """Indicates a problem with a configuration setting."""
+
+
 def connect(mock):
     """Connect and wait for connection to MongoDB.
 
@@ -37,13 +41,22 @@ def connect(mock):
     :type mock: bool
     """
     global DATABASE, CLIENT
-    host = os.getenv("MONGODB_HOST", "localhost")
-    port = os.getenv("MONGODB_PORT", "27017")
-    username = os.getenv("MONGODB_USERNAME")
-    password = os.getenv("MONGODB_PASSWORD")
-    database_name = os.getenv("DATABASE_NAME", "this_is_not_correct")
-    replicaset = os.getenv("MONGODB_REPLICASET") or None
-    LOGGER.info("Connecting to %r:%r", host, port)
+    url = os.getenv("MONGODB_CONNSTRING")
+    if not url:
+        raise ConfigurationError(
+            "The required MONGODB_CONNSTRING environment variable was "
+            "unset or empty."
+        )
+    database_name = os.getenv("MONGODB_DATABASE")
+    if not database_name:
+        raise ConfigurationError(
+            "The required MONGODB_DATABASE environment variable was unset or empty."
+        )
+    safe_url = url
+    urlparts = urllib.parse.urlparse(url)
+    if urlparts.password:
+        safe_url = safe_url.replace(urlparts.password, "*****")
+    LOGGER.info("Connecting to %s", safe_url)
 
     if mock:
         # pylint: disable=import-outside-toplevel, import-error
@@ -53,14 +66,8 @@ def connect(mock):
     else:
         mongo_client = pymongo.MongoClient
 
-    if username and password:
-        url = "mongodb://{}:{}@{}:{}".format(
-            urllib.parse.quote(username), urllib.parse.quote(password), host, port
-        )
-    else:
-        url = "mongodb://{}:{}".format(host, port)
     with LOCK:
-        CLIENT = mongo_client(url, replicaset=replicaset)
+        CLIENT = mongo_client(url)
         DATABASE = CLIENT[database_name]
     # 'server_info' will create a connection against the MongoDB effectively testing
     # the connection for us. This means that the 'connect' method will block until

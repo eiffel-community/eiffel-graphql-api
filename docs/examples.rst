@@ -14,12 +14,8 @@ Initialize terminal
     export RABBITMQ_PORT=
     export RABBITMQ_VHOST=
     export RABBITMQ_QUEUE=
-    export MONGODB_HOST=
-    export MONGODB_PORT=
-    export MONGODB_USERNAME=
-    export MONGODB_PASSWORD=
-    export MONGODB_REPLICASET=
-    export DATABASE_NAME=
+    export MONGODB_CONNSTRING=
+    export MONGODB_DATABASE=
 
 Start DB storage (development)
 ------------------------------
