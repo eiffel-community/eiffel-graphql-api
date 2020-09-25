@@ -14,13 +14,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # -*- coding: utf-8 -*-
+"""Test mongo database connection lib."""
 
-from eiffellib.events.eiffel_composition_defined_event import EiffelCompositionDefinedEvent
+from eiffellib.events.eiffel_composition_defined_event import (
+    EiffelCompositionDefinedEvent,
+)
 
 from eiffel_graphql_api.graphql.db import database
 
 
 def test_insert_single_doc_inserts_doc(mock_mongo):
+    """Test that single doc inserts document to db."""
     event = EiffelCompositionDefinedEvent()
 
     assert database.insert_to_db(event, None)
@@ -30,6 +34,7 @@ def test_insert_single_doc_inserts_doc(mock_mongo):
 
 
 def test_insert_single_doc_ignores_duplicate_ids(mock_mongo):
+    """Test that single doc inserts ignore duplicate ids."""
     event = EiffelCompositionDefinedEvent()
     collection = mock_mongo[event.meta.type]
 

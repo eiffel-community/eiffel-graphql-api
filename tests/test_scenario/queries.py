@@ -13,7 +13,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-FOLLOW_MY_COMMIT = '''{
+"""Scenario queries."""
+
+FOLLOW_MY_COMMIT = """{
   sourceChangeCreated(search: "{'data.gitIdentifier.commitId': 'c9ea15d2d0d3bcfa2856416be4add5a5919764f4'}") {
     edges {
       node {
@@ -66,4 +68,4 @@ FOLLOW_MY_COMMIT = '''{
     }
   }
 }
-'''
+"""

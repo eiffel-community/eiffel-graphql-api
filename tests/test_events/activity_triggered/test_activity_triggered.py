@@ -14,21 +14,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # -*- coding: utf-8 -*-
-import pytest
+"""Activity triggered tests."""
 import logging
 from unittest import TestCase
-from .event import *
-from .queries import *
+
 from tests.lib.query_handler import GraphQLQueryHandler
 
+# pylint:disable=wildcard-import,unused-wildcard-import
+from .event import *
+from .queries import *
 
-logging.basicConfig(
-    level=logging.DEBUG
-)
 
+logging.basicConfig(level=logging.DEBUG)
 
 
 class TestActivityTriggered(TestCase):
+    """Tests for getting activity triggered from graphql API."""
 
     @classmethod
     def setUpClass(cls):
@@ -72,7 +73,8 @@ class TestActivityTriggered(TestCase):
             - Data returned shall be correct:
                 - name             : "Activity triggered"
                 - categories       : [{"type": "Testing EiffelDB"}]
-                - activityTriggers : [{"type": "MANUAL", "description": "Eiffel Graphql API test trigger"}]
+                - activityTriggers : [{"type": "MANUAL",
+                                       "description": "Eiffel Graphql API test trigger"}]
                 - executionType    : "MANUAL"
 
         Test steps:
@@ -93,8 +95,10 @@ class TestActivityTriggered(TestCase):
         self.logger.info("STEP: Verify that data returned correctly.")
         self.assertEqual(data.get("categories"), [{"type": "Testing EiffelDB"}])
         self.assertEqual(len(data.get("activityTriggers", [])), 1)
-        self.assertDictEqual(data.get("activityTriggers")[0],
-                             {"type": "MANUAL", "description": "Eiffel Graphql API test trigger"})
+        self.assertDictEqual(
+            data.get("activityTriggers")[0],
+            {"type": "MANUAL", "description": "Eiffel Graphql API test trigger"},
+        )
         self.assertEqual(data.get("executionType"), "MANUAL")
         self.assertEqual(data.get("name"), "Activity triggered")
 
@@ -160,7 +164,9 @@ class TestActivityTriggered(TestCase):
             1. Query 'links.context' from ActivityTriggered in Graphql.
             2. Verify that the 'links' key exists.
         """
-        self.logger.info("STEP: Query 'links.context' from ActivityTriggered in Graphql.")
+        self.logger.info(
+            "STEP: Query 'links.context' from ActivityTriggered in Graphql."
+        )
         self.logger.debug(CONTEXT_LINK)
         response = self.query_handler.execute(CONTEXT_LINK)
         self.logger.debug(pretty(response))
@@ -183,15 +189,24 @@ class TestActivityTriggered(TestCase):
         event = eiffel_activity_triggered_with_activity_context()
         try:
             insert(event)
-            self.logger.info("STEP: Query 'links.Context.ActivityTriggered' from ActivityTriggered in Graphql.")
+            self.logger.info(
+                "STEP: Query 'links.Context.ActivityTriggered' from ActivityTriggered in Graphql."
+            )
             self.logger.debug(CONTEXT_LINK_TO_ACTIVITY_TRIGGERED)
             response = self.query_handler.execute(CONTEXT_LINK_TO_ACTIVITY_TRIGGERED)
             self.logger.debug(pretty(response))
 
-            self.logger.info("STEP: Verify that the returned event is an ActivityTriggered.")
+            self.logger.info(
+                "STEP: Verify that the returned event is an ActivityTriggered."
+            )
             link_meta = self.query_handler.get_node(response, "meta")
-            self.assertDictEqual(link_meta, {"id": "6a1abb6e-2c13-4a82-8fe2-012f8fe7c541",
-                                             "type": "EiffelActivityTriggeredEvent"})
+            self.assertDictEqual(
+                link_meta,
+                {
+                    "id": "6a1abb6e-2c13-4a82-8fe2-012f8fe7c541",
+                    "type": "EiffelActivityTriggeredEvent",
+                },
+            )
         finally:
             remove(event)
 
@@ -205,19 +220,30 @@ class TestActivityTriggered(TestCase):
             1. Query 'links.Context.TestSuiteStarted' from ActivityTriggered in Graphql.
             2. Verify that the returned event is a TestSuiteStarted.
         """
-        events = [eiffel_test_suite_started_event(),
-                  eiffel_activity_triggered_with_test_suite_context()]
+        events = [
+            eiffel_test_suite_started_event(),
+            eiffel_activity_triggered_with_test_suite_context(),
+        ]
         try:
             insert(events)
-            self.logger.info("STEP: Query 'links.Context.TestSuiteStarted' from ActivityTriggered in Graphql.")
+            self.logger.info(
+                "STEP: Query 'links.Context.TestSuiteStarted' from ActivityTriggered in Graphql."
+            )
             self.logger.debug(CONTEXT_LINK_TO_TEST_SUITE_STARTED)
             response = self.query_handler.execute(CONTEXT_LINK_TO_TEST_SUITE_STARTED)
             self.logger.debug(pretty(response))
 
-            self.logger.info("STEP: Verify that the returned event is a TestSuiteStarted.")
+            self.logger.info(
+                "STEP: Verify that the returned event is a TestSuiteStarted."
+            )
             link_meta = self.query_handler.get_node(response, "meta")
-            self.assertDictEqual(link_meta, {"id": "1a6ff91b-785b-46a6-85fa-01ca0ef97bb2",
-                                             "type": "EiffelTestSuiteStartedEvent"})
+            self.assertDictEqual(
+                link_meta,
+                {
+                    "id": "1a6ff91b-785b-46a6-85fa-01ca0ef97bb2",
+                    "type": "EiffelTestSuiteStartedEvent",
+                },
+            )
         finally:
             remove(events)
 
@@ -234,15 +260,24 @@ class TestActivityTriggered(TestCase):
         event = eiffel_activity_triggered_with_cause()
         try:
             insert(event)
-            self.logger.info("STEP: Query 'links.Cause.TestSuiteStarted' from ActivityTriggered in Graphql.")
+            self.logger.info(
+                "STEP: Query 'links.Cause.TestSuiteStarted' from ActivityTriggered in Graphql."
+            )
             self.logger.debug(CAUSE_LINK)
             response = self.query_handler.execute(CAUSE_LINK)
             self.logger.debug(pretty(response))
 
-            self.logger.info("STEP: Verify that the returned event is an ActivityTriggered.")
+            self.logger.info(
+                "STEP: Verify that the returned event is an ActivityTriggered."
+            )
             link_meta = self.query_handler.get_node(response, "meta")
-            self.assertDictEqual(link_meta, {"id": "6a1abb6e-2c13-4a82-8fe2-012f8fe7c541",
-                                             "type": "EiffelActivityTriggeredEvent"})
+            self.assertDictEqual(
+                link_meta,
+                {
+                    "id": "6a1abb6e-2c13-4a82-8fe2-012f8fe7c541",
+                    "type": "EiffelActivityTriggeredEvent",
+                },
+            )
         finally:
             remove(event)
 
@@ -256,18 +291,32 @@ class TestActivityTriggered(TestCase):
             1. Query 'links.FlowContext.FlowContextDefined' from ActivityTriggered in Graphql.
             2. Verify that the returned event is a FlowContextDefined.
         """
-        events = [eiffel_flow_context_defined_event(),
-                  eiffel_activity_triggered_with_flow_context()]
+        events = [
+            eiffel_flow_context_defined_event(),
+            eiffel_activity_triggered_with_flow_context(),
+        ]
         try:
             insert(events)
-            self.logger.info("STEP: Query 'links.FlowContext.FlowContextDefined' from ActivityTriggered in Graphql.")
+            self.logger.info(
+                (
+                    "STEP: Query 'links.FlowContext.FlowContextDefined' from ActivityTriggered"
+                    " in Graphql."
+                )
+            )
             self.logger.debug(FLOW_CONTEXT_LINK)
             response = self.query_handler.execute(FLOW_CONTEXT_LINK)
             self.logger.debug(pretty(response))
 
-            self.logger.info("STEP: Verify that the returned event is an FlowContextDefined.")
+            self.logger.info(
+                "STEP: Verify that the returned event is an FlowContextDefined."
+            )
             link_meta = self.query_handler.get_node(response, "meta")
-            self.assertDictEqual(link_meta, {"id": "ae61abda-3c8e-41c4-a272-98c218165897",
-                                             "type": "EiffelFlowContextDefinedEvent"})
+            self.assertDictEqual(
+                link_meta,
+                {
+                    "id": "ae61abda-3c8e-41c4-a272-98c218165897",
+                    "type": "EiffelFlowContextDefinedEvent",
+                },
+            )
         finally:
             remove(events)

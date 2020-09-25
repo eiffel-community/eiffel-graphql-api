@@ -14,27 +14,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # -*- coding: utf-8 -*-
-import pytest
+"""Artifact created tests."""
 import logging
 from unittest import TestCase
-from .event import *
-from .queries import *
+
 from tests.lib.query_handler import GraphQLQueryHandler
 
+# pylint:disable=wildcard-import,unused-wildcard-import
+from .event import *
+from .queries import *
 
-logging.basicConfig(
-    level=logging.DEBUG
-)
+
+logging.basicConfig(level=logging.DEBUG)
 
 
 class TestArtifactCreated(TestCase):
+    """Tests for getting artifact created from graphql API."""
 
     @classmethod
     def setUpClass(cls):
         cls.query_handler = GraphQLQueryHandler("http://127.0.0.1:12345/graphql")
-        cls.events = [
-            eiffel_artifact_created_event()
-        ]
+        cls.events = [eiffel_artifact_created_event()]
         cls.logger = logging.getLogger("TestArtifactCreated")
 
     def setUp(self):
@@ -76,23 +76,14 @@ class TestArtifactCreated(TestCase):
             {
                 "identity": "pkg:artifact/created/test@1.0.0",
                 "fileInformation": [
-                    {
-                        "name": "a_file.txt",
-                        "artifactTags": [
-                            {"type": "EPIC_TEST_FILE"}
-                        ]
-                    }
+                    {"name": "a_file.txt", "artifactTags": [{"type": "EPIC_TEST_FILE"}]}
                 ],
                 "buildCommand": "pytest",
                 "requiresImplementation": "ANY",
-                "implements": [
-                    {"type": "pkg:composition/link/test@1.0.0"}
-                ],
-                "dependsOn": [
-                    {"type": "pkg:environment/link/test@1.0.0"}
-                ],
-                "name": "TestingArtifact"
-            }
+                "implements": [{"type": "pkg:composition/link/test@1.0.0"}],
+                "dependsOn": [{"type": "pkg:environment/link/test@1.0.0"}],
+                "name": "TestingArtifact",
+            },
         )
 
     def test_artifact_created_composition_link(self):
@@ -105,22 +96,31 @@ class TestArtifactCreated(TestCase):
             1. Query 'links.Composition' from ArtifactCreated in Graphql.
             2. Verify that the returned event is a CompositionDefined.
         """
-        events =[
+        events = [
             eiffel_composition_defined(),
-            eiffel_artifact_created_event_composition_link()
+            eiffel_artifact_created_event_composition_link(),
         ]
         try:
             for event in events:
                 insert(event)
-            self.logger.info("STEP: Query 'links.Composition' from ArtifactCreated in Graphql.")
+            self.logger.info(
+                "STEP: Query 'links.Composition' from ArtifactCreated in Graphql."
+            )
             self.logger.debug(LINKS_COMPOSITION_DEFINED)
             response = self.query_handler.execute(LINKS_COMPOSITION_DEFINED)
             self.logger.debug(pretty(response))
 
-            self.logger.info("STEP: Verify that the returned event is a CompositionDefined.")
+            self.logger.info(
+                "STEP: Verify that the returned event is a CompositionDefined."
+            )
             link_meta = self.query_handler.get_node(response, "meta")
-            self.assertDictEqual(link_meta, {"id": "460ff165-125d-468f-a5d2-677d5a939507",
-                                             "type": "EiffelCompositionDefinedEvent"})
+            self.assertDictEqual(
+                link_meta,
+                {
+                    "id": "460ff165-125d-468f-a5d2-677d5a939507",
+                    "type": "EiffelCompositionDefinedEvent",
+                },
+            )
         finally:
             for event in events:
                 remove(event)
@@ -135,22 +135,31 @@ class TestArtifactCreated(TestCase):
             1. Query 'links.Environment' from ArtifactCreated in Graphql.
             2. Verify that the returned event is an EnvironmentDefined.
         """
-        events =[
+        events = [
             eiffel_environment_defined(),
-            eiffel_artifact_created_event_environment_link()
+            eiffel_artifact_created_event_environment_link(),
         ]
         try:
             for event in events:
                 insert(event)
-            self.logger.info("STEP: Query 'links.Environment' from ArtifactCreated in Graphql.")
+            self.logger.info(
+                "STEP: Query 'links.Environment' from ArtifactCreated in Graphql."
+            )
             self.logger.debug(LINKS_ENVIRONMENT_DEFINED)
             response = self.query_handler.execute(LINKS_ENVIRONMENT_DEFINED)
             self.logger.debug(pretty(response))
 
-            self.logger.info("STEP: Verify that the returned event is an EnvironmentDefined.")
+            self.logger.info(
+                "STEP: Verify that the returned event is an EnvironmentDefined."
+            )
             link_meta = self.query_handler.get_node(response, "meta")
-            self.assertDictEqual(link_meta, {"id": "0639dc49-8f4f-4732-899e-3aefc66a5bfb",
-                                             "type": "EiffelEnvironmentDefinedEvent"})
+            self.assertDictEqual(
+                link_meta,
+                {
+                    "id": "0639dc49-8f4f-4732-899e-3aefc66a5bfb",
+                    "type": "EiffelEnvironmentDefinedEvent",
+                },
+            )
         finally:
             for event in events:
                 remove(event)
@@ -168,15 +177,24 @@ class TestArtifactCreated(TestCase):
         event = eiffel_artifact_created_event_previous_version_link()
         try:
             insert(event)
-            self.logger.info("STEP: Query 'links.ArtifactPreviousVersion' from ArtifactCreated in Graphql.")
+            self.logger.info(
+                "STEP: Query 'links.ArtifactPreviousVersion' from ArtifactCreated in Graphql."
+            )
             self.logger.debug(LINKS_PREVIOUS_VERSION)
             response = self.query_handler.execute(LINKS_PREVIOUS_VERSION)
             self.logger.debug(pretty(response))
 
-            self.logger.info("STEP: Verify that the returned event is an EnvironmentDefined.")
+            self.logger.info(
+                "STEP: Verify that the returned event is an EnvironmentDefined."
+            )
             link_meta = self.query_handler.get_node(response, "meta")
-            self.assertDictEqual(link_meta, {"id": "730f8573-cd69-41f5-81ad-d85aebf28d03",
-                                             "type": "EiffelArtifactCreatedEvent"})
+            self.assertDictEqual(
+                link_meta,
+                {
+                    "id": "730f8573-cd69-41f5-81ad-d85aebf28d03",
+                    "type": "EiffelArtifactCreatedEvent",
+                },
+            )
         finally:
             remove(event)
 

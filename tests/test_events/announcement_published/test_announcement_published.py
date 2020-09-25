@@ -14,28 +14,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # -*- coding: utf-8 -*-
-import pytest
+"""Announcement published tests."""
 import logging
 from unittest import TestCase
-from .event import *
-from .queries import *
+
 from tests.lib.query_handler import GraphQLQueryHandler
 
+# pylint:disable=wildcard-import,unused-wildcard-import
+from .event import *
+from .queries import *
 
-logging.basicConfig(
-    level=logging.DEBUG
-)
 
+logging.basicConfig(level=logging.DEBUG)
 
 
 class TestAnnouncementPublished(TestCase):
+    """Tests for getting announcement published from graphql API."""
 
     @classmethod
     def setUpClass(cls):
         cls.query_handler = GraphQLQueryHandler("http://127.0.0.1:12345/graphql")
-        cls.events = [
-            eiffel_announcement_published_event()
-        ]
+        cls.events = [eiffel_announcement_published_event()]
         cls.logger = logging.getLogger("TestAnnouncementPublished")
 
     def setUp(self):
@@ -62,7 +61,9 @@ class TestAnnouncementPublished(TestCase):
             1. Query 'data' from AnnouncementPublished in Graphql.
             2. Verify that the response is correct.
         """
-        self.logger.info("STEP: Query 'data.activityOutcome' from AnnouncementPublished in Graphql.")
+        self.logger.info(
+            "STEP: Query 'data.activityOutcome' from AnnouncementPublished in Graphql."
+        )
         self.logger.debug(DATA_ONLY)
         response = self.query_handler.execute(DATA_ONLY)
         self.logger.debug(pretty(response))
@@ -76,15 +77,16 @@ class TestAnnouncementPublished(TestCase):
                 "heading": "This is a heading",
                 "body": "This is a body",
                 "uri": "http://uri.se",
-                "severity": "MINOR"
-            }
+                "severity": "MINOR",
+            },
         )
 
     def test_announcement_published_link(self):
-        """Test that it is possible to query a valid activity execution link on announcement published.
+        """Test that it is possible to query a valid activity execution link on announcement.
 
         Approval criteria:
-            - Graphql shall return an AnnouncementPublished event when requesting ModifiedAnnouncement.
+            - Graphql shall return an AnnouncementPublished event when requesting
+              ModifiedAnnouncement.
 
         Test steps:
             1. Query 'links.ModifiedAnnouncement' from AnnouncementPublished in Graphql.
@@ -93,15 +95,24 @@ class TestAnnouncementPublished(TestCase):
         event = eiffel_announcement_published_event_link()
         try:
             insert(event)
-            self.logger.info("STEP: Query 'links.ActivityExecution' from AnnouncementPublished in Graphql.")
+            self.logger.info(
+                "STEP: Query 'links.ActivityExecution' from AnnouncementPublished in Graphql."
+            )
             self.logger.debug(LINKS_ONLY)
             response = self.query_handler.execute(LINKS_ONLY)
             self.logger.debug(pretty(response))
 
-            self.logger.info("STEP: Verify that the returned event is an AnnouncementPublished.")
+            self.logger.info(
+                "STEP: Verify that the returned event is an AnnouncementPublished."
+            )
             link_meta = self.query_handler.get_node(response, "meta")
-            self.assertDictEqual(link_meta, {"id": "4baf56e6-404a-4132-a28b-9ed782f26293",
-                                             "type": "EiffelAnnouncementPublishedEvent"})
+            self.assertDictEqual(
+                link_meta,
+                {
+                    "id": "4baf56e6-404a-4132-a28b-9ed782f26293",
+                    "type": "EiffelAnnouncementPublishedEvent",
+                },
+            )
         finally:
             remove(event)
 

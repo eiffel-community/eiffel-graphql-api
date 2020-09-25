@@ -13,8 +13,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""Announcement published queries."""
 
-DATA_ONLY = '''{
+DATA_ONLY = """{
   announcementPublished {
     edges {
       node {
@@ -28,9 +29,9 @@ DATA_ONLY = '''{
     }
   }
 }
-'''
+"""
 
-META_ONLY = '''{
+META_ONLY = """{
   announcementPublished {
     edges {
       node {
@@ -44,9 +45,9 @@ META_ONLY = '''{
     }
   }
 }
-'''
+"""
 
-LINKS_ONLY = '''{
+LINKS_ONLY = """{
   announcementPublished(search: "{'meta.id': 'bc73b474-4f5c-4931-b7d5-8588d0a6534a'}") {
     edges {
       node {
@@ -64,4 +65,4 @@ LINKS_ONLY = '''{
     }
   }
 }
-'''
+"""

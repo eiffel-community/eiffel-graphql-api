@@ -14,28 +14,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # -*- coding: utf-8 -*-
-import pytest
+"""Activity finished tests."""
 import logging
 from unittest import TestCase
-from .event import *
-from .queries import *
+
 from tests.lib.query_handler import GraphQLQueryHandler
 
+# pylint:disable=wildcard-import,unused-wildcard-import
+from .event import *
+from .queries import *
 
-logging.basicConfig(
-    level=logging.DEBUG
-)
 
+logging.basicConfig(level=logging.DEBUG)
 
 
 class TestActivityFinished(TestCase):
+    """Tests for getting activity finished from graphql API."""
 
     @classmethod
     def setUpClass(cls):
         cls.query_handler = GraphQLQueryHandler("http://127.0.0.1:12345/graphql")
         cls.events = [
             eiffel_activity_triggered_event(),
-            eiffel_activity_finished_event()
+            eiffel_activity_finished_event(),
         ]
         cls.logger = logging.getLogger("TestActivityFinished")
 
@@ -54,13 +55,16 @@ class TestActivityFinished(TestCase):
         Approval criteria:
             - It shall be possible to query 'data.outcome' from graphql.
             - Outcome shall be:
-                - {"conclusion": "SUCCESSFUL", "description": "This activity finished successfully."}
+                - {"conclusion": "SUCCESSFUL",
+                   "description": "This activity finished successfully."}
 
         Test steps:
             1. Query 'data.activityOutcome' from ActivityFinished in Graphql.
             2. Verify that the response is correct.
         """
-        self.logger.info("STEP: Query 'data.activityOutcome' from ActivityFinished in Graphql.")
+        self.logger.info(
+            "STEP: Query 'data.activityOutcome' from ActivityFinished in Graphql."
+        )
         self.logger.debug(DATA_ONLY)
         response = self.query_handler.execute(DATA_ONLY)
         self.logger.debug(pretty(response))
@@ -72,8 +76,8 @@ class TestActivityFinished(TestCase):
             data.get("activityOutcome"),
             {
                 "conclusion": "SUCCESSFUL",
-                "description": "This activity finished successfully."
-            }
+                "description": "This activity finished successfully.",
+            },
         )
 
     def test_activity_finished_persistent_logs(self):
@@ -89,7 +93,9 @@ class TestActivityFinished(TestCase):
             1. Query 'data.activityPersistentLogs' from ActivityFinished in Graphql.
             2. Verify that the response is correct.
         """
-        self.logger.info("STEP: Query 'data.activityPersistentLogs' from ActivityFinished in Graphql.")
+        self.logger.info(
+            "STEP: Query 'data.activityPersistentLogs' from ActivityFinished in Graphql."
+        )
         self.logger.debug(DATA_ONLY)
         response = self.query_handler.execute(DATA_ONLY)
         self.logger.debug(pretty(response))
@@ -104,8 +110,11 @@ class TestActivityFinished(TestCase):
                     self.assertEqual(log.get("uri"), uri)
                     break
             else:
-                raise AssertionError("{{'name': {}, 'uri': {}}} not in liveLogs: {}".format(
-                    name, uri, data.get("activityPersistentLogs")))
+                raise AssertionError(
+                    "{{'name': {}, 'uri': {}}} not in liveLogs: {}".format(
+                        name, uri, data.get("activityPersistentLogs")
+                    )
+                )
 
     def test_activity_finished_link(self):
         """Test that it is possible to query a valid activity execution link on activity finished.
@@ -117,15 +126,24 @@ class TestActivityFinished(TestCase):
             1. Query 'links.ActivityExecution' from ActivityFinished in Graphql.
             2. Verify that the returned event is an ActivityTriggered.
         """
-        self.logger.info("STEP: Query 'links.ActivityExecution' from ActivityFinished in Graphql.")
+        self.logger.info(
+            "STEP: Query 'links.ActivityExecution' from ActivityFinished in Graphql."
+        )
         self.logger.debug(LINKS_ONLY)
         response = self.query_handler.execute(LINKS_ONLY)
         self.logger.debug(pretty(response))
 
-        self.logger.info("STEP: Verify that the returned event is an ActivityTriggered.")
+        self.logger.info(
+            "STEP: Verify that the returned event is an ActivityTriggered."
+        )
         link_meta = self.query_handler.get_node(response, "meta")
-        self.assertDictEqual(link_meta, {"id": "693c3bac-10a6-4b77-82d7-430139195c1e",
-                                         "type": "EiffelActivityTriggeredEvent"})
+        self.assertDictEqual(
+            link_meta,
+            {
+                "id": "693c3bac-10a6-4b77-82d7-430139195c1e",
+                "type": "EiffelActivityTriggeredEvent",
+            },
+        )
 
     def test_activity_finished_meta(self):
         """Test that it is possible to query 'meta' from activity finished.

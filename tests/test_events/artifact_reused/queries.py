@@ -13,9 +13,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""Test artifact reused queries."""
 
 
-META_ONLY = '''{
+META_ONLY = """{
   artifactReused {
     edges {
       node {
@@ -29,10 +30,10 @@ META_ONLY = '''{
     }
   }
 }
-'''
+"""
 
 
-LINKS_COMPOSITION = '''{
+LINKS_COMPOSITION = """{
   artifactReused(search: "{'meta.id': '0e5d23cc-e3ed-45e5-9370-9fbcfd260812'}") {
     edges {
       node {
@@ -50,10 +51,10 @@ LINKS_COMPOSITION = '''{
     }
   }
 }
-'''
+"""
 
 
-LINKS_ARTIFACT = '''{
+LINKS_ARTIFACT = """{
   artifactReused(search: "{'meta.id': '88feb145-707c-49df-afdf-c0b80aca9cc3'}") {
     edges {
       node {
@@ -71,4 +72,4 @@ LINKS_ARTIFACT = '''{
     }
   }
 }
-'''
+"""

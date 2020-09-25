@@ -14,27 +14,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # -*- coding: utf-8 -*-
-import pytest
+"""Test artifact reused."""
 import logging
 from unittest import TestCase
-from .event import *
-from .queries import *
+
 from tests.lib.query_handler import GraphQLQueryHandler
 
+# pylint:disable=wildcard-import,unused-wildcard-import
+from .event import *
+from .queries import *
 
-logging.basicConfig(
-    level=logging.DEBUG
-)
+
+logging.basicConfig(level=logging.DEBUG)
 
 
 class TestArtifactReused(TestCase):
+    """Tests for getting artifact reused from graphql API."""
 
     @classmethod
     def setUpClass(cls):
         cls.query_handler = GraphQLQueryHandler("http://127.0.0.1:12345/graphql")
-        cls.events = [
-            eiffel_artifact_reused_event()
-        ]
+        cls.events = [eiffel_artifact_reused_event()]
         cls.logger = logging.getLogger("TestArtifactReused")
 
     def setUp(self):
@@ -58,20 +58,29 @@ class TestArtifactReused(TestCase):
         """
         events = [
             eiffel_artifact_created_event(),
-            eiffel_artifact_reused_event_artifact_reused_link()
+            eiffel_artifact_reused_event_artifact_reused_link(),
         ]
         try:
             for event in events:
                 insert(event)
-            self.logger.info("STEP: Query 'links.ReusedArtifact' from ArtifactReused in Graphql.")
+            self.logger.info(
+                "STEP: Query 'links.ReusedArtifact' from ArtifactReused in Graphql."
+            )
             self.logger.debug(LINKS_ARTIFACT)
             response = self.query_handler.execute(LINKS_ARTIFACT)
             self.logger.debug(pretty(response))
 
-            self.logger.info("STEP: Verify that the returned event is a ArtifactCreated.")
+            self.logger.info(
+                "STEP: Verify that the returned event is a ArtifactCreated."
+            )
             link_meta = self.query_handler.get_node(response, "meta")
-            self.assertDictEqual(link_meta, {"id": "bd7cbd8a-1aef-4b4e-87d3-42ffa4acb354",
-                                             "type": "EiffelArtifactCreatedEvent"})
+            self.assertDictEqual(
+                link_meta,
+                {
+                    "id": "bd7cbd8a-1aef-4b4e-87d3-42ffa4acb354",
+                    "type": "EiffelArtifactCreatedEvent",
+                },
+            )
         finally:
             for event in events:
                 remove(event)
@@ -88,20 +97,29 @@ class TestArtifactReused(TestCase):
         """
         events = [
             eiffel_composition_defined(),
-            eiffel_artifact_reused_event_composition_link()
+            eiffel_artifact_reused_event_composition_link(),
         ]
         try:
             for event in events:
                 insert(event)
-            self.logger.info("STEP: Query 'links.ReusedArtifact' from ArtifactReused in Graphql.")
+            self.logger.info(
+                "STEP: Query 'links.ReusedArtifact' from ArtifactReused in Graphql."
+            )
             self.logger.debug(LINKS_COMPOSITION)
             response = self.query_handler.execute(LINKS_COMPOSITION)
             self.logger.debug(pretty(response))
 
-            self.logger.info("STEP: Verify that the returned event is a CompositionDefined.")
+            self.logger.info(
+                "STEP: Verify that the returned event is a CompositionDefined."
+            )
             link_meta = self.query_handler.get_node(response, "meta")
-            self.assertDictEqual(link_meta, {"id": "fb2c7a14-1aed-4fcb-9efe-3ff8496d286c",
-                                             "type": "EiffelCompositionDefinedEvent"})
+            self.assertDictEqual(
+                link_meta,
+                {
+                    "id": "fb2c7a14-1aed-4fcb-9efe-3ff8496d286c",
+                    "type": "EiffelCompositionDefinedEvent",
+                },
+            )
         finally:
             for event in events:
                 remove(event)

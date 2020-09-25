@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # -*- coding: utf-8 -*-
+"""Pytest configuration."""
 import os
 import threading
 import pytest
@@ -24,8 +25,9 @@ from eiffel_graphql_api.graphql.db.database import get_client
 
 @pytest.fixture
 def mock_mongo():
-    """Inject a MongoDB client connected to a mock server with no database
-    in place, guaranteeing that we'll start from a clean slate.
+    """Inject a MongoDB client connected to a mock server.
+
+    No database in place, guaranteeing that we'll start from a clean slate.
     """
     client = get_client(mock=True)
     client.drop_database(os.getenv("DATABASE_NAME"))
@@ -38,7 +40,9 @@ def start():
 
 
 @pytest.fixture(scope="session", autouse=True)
-def start_server(request):
+def start_server(
+    request,
+):  # Input must exist due to 'fixture'. pylint:disable=unused-argument
     """Start the Graphql API server in a thread. This is done once per test session."""
     client = get_client(mock=True)
     thread = threading.Thread(target=start)
@@ -46,6 +50,6 @@ def start_server(request):
     thread.start()
     client.drop_database(os.getenv("DATABASE_NAME"))
 
-    def start_server_fin():
+    def start_server_fin():  # pylint:disable=unused-variable
         """Drop the MongoDB database as a cleanup measure."""
         client.drop_database(os.getenv("DATABASE_NAME"))
