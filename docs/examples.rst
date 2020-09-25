@@ -14,6 +14,7 @@ Initialize terminal
     export RABBITMQ_PORT=
     export RABBITMQ_VHOST=
     export RABBITMQ_QUEUE=
+    export RABBITMQ_DURABLE_QUEUE=
     export MONGODB_CONNSTRING=
     export MONGODB_DATABASE=
 
