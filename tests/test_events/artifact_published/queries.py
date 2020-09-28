@@ -13,8 +13,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""Artifact published queries."""
 
-DATA_ONLY = '''{
+DATA_ONLY = """{
   artifactPublished {
     edges {
       node {
@@ -28,9 +29,9 @@ DATA_ONLY = '''{
     }
   }
 }
-'''
+"""
 
-META_ONLY = '''{
+META_ONLY = """{
   artifactPublished {
     edges {
       node {
@@ -44,10 +45,10 @@ META_ONLY = '''{
     }
   }
 }
-'''
+"""
 
 
-LINKS_ONLY = '''{
+LINKS_ONLY = """{
   artifactPublished {
     edges {
       node {
@@ -65,4 +66,4 @@ LINKS_ONLY = '''{
     }
   }
 }
-'''
+"""

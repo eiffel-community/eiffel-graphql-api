@@ -14,20 +14,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # -*- coding: utf-8 -*-
-import pytest
+"""Test scenario 'follow-my-commit'."""
 import logging
 from unittest import TestCase
-from .event import *
-from .queries import *
+
 from tests.lib.query_handler import GraphQLQueryHandler
 
+# pylint:disable=wildcard-import,unused-wildcard-import
+from .event import *
+from .queries import *
 
-logging.basicConfig(
-    level=logging.DEBUG
-)
+
+logging.basicConfig(level=logging.DEBUG)
 
 
 class TestFollowMyCommit(TestCase):
+    """Test the 'follow-my-commit' scenario."""
 
     @classmethod
     def setUpClass(cls):
@@ -43,7 +45,7 @@ class TestFollowMyCommit(TestCase):
             eiffel_confidence_level_modified_event("Daily"),
             eiffel_confidence_level_modified_event("Stability"),
             eiffel_confidence_level_modified_event("Weekly"),
-            eiffel_confidence_level_modified_event("FredrikIsNojd")
+            eiffel_confidence_level_modified_event("FredrikIsNojd"),
         ]
         cls.logger = logging.getLogger("TestFollowMyCommit")
 
@@ -68,15 +70,25 @@ class TestFollowMyCommit(TestCase):
         """
         self.logger.info("STEP: Query a commit ID from GraphQL API.")
         response = self.query_handler.execute(FOLLOW_MY_COMMIT)
-        nodes = self.query_handler.search_for_node_typename(response, "ConfidenceLevelModified")
+        nodes = self.query_handler.search_for_node_typename(
+            response, "ConfidenceLevelModified"
+        )
 
-        self.logger.info("STEP: Cerify that it is possible to fetch confidence levels from this commit ID.")
+        self.logger.info(
+            "STEP: Cerify that it is possible to fetch confidence levels from this commit ID."
+        )
 
         node_names = []
         for node_name, node in nodes:
             self.assertEqual(node_name, "ConfidenceLevelModified")
             node_names.append(node["data"]["name"])
 
-        for node_name in ("readyForIntegration", "IntegrationTests", "Daily",
-                          "Stability", "Weekly", "FredrikIsNojd"):
+        for node_name in (
+            "readyForIntegration",
+            "IntegrationTests",
+            "Daily",
+            "Stability",
+            "Weekly",
+            "FredrikIsNojd",
+        ):
             self.assertIn(node_name, node_names)

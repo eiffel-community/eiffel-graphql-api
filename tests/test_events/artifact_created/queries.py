@@ -13,8 +13,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""Artifact created queries."""
 
-DATA_ONLY = '''{
+DATA_ONLY = """{
   artifactCreated {
     edges {
       node {
@@ -40,9 +41,9 @@ DATA_ONLY = '''{
     }
   }
 }
-'''
+"""
 
-META_ONLY = '''{
+META_ONLY = """{
   artifactCreated {
     edges {
       node {
@@ -56,10 +57,10 @@ META_ONLY = '''{
     }
   }
 }
-'''
+"""
 
 
-LINKS_COMPOSITION_DEFINED = '''{
+LINKS_COMPOSITION_DEFINED = """{
   artifactCreated(search: "{'data.identity': 'pkg:composition/link/test@1.0.0'}") {
     edges {
       node {
@@ -77,10 +78,10 @@ LINKS_COMPOSITION_DEFINED = '''{
     }
   }
 }
-'''
+"""
 
 
-LINKS_ENVIRONMENT_DEFINED = '''{
+LINKS_ENVIRONMENT_DEFINED = """{
   artifactCreated(search: "{'data.identity': 'pkg:environment/link/test@1.0.0'}") {
     edges {
       node {
@@ -98,9 +99,9 @@ LINKS_ENVIRONMENT_DEFINED = '''{
     }
   }
 }
-'''
+"""
 
-LINKS_PREVIOUS_VERSION = '''{
+LINKS_PREVIOUS_VERSION = """{
   artifactCreated(search: "{'data.identity': 'pkg:previous_version/link/test@1.0.0'}") {
     edges {
       node {
@@ -118,4 +119,4 @@ LINKS_PREVIOUS_VERSION = '''{
     }
   }
 }
-'''
+"""

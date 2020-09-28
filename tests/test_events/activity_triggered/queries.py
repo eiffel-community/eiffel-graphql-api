@@ -13,8 +13,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""Activity triggered queries."""
 
-DATA_NAME_ONLY = '''{
+DATA_NAME_ONLY = """{
   activityTriggered {
     edges {
       node {
@@ -25,9 +26,9 @@ DATA_NAME_ONLY = '''{
     }
   }
 }
-'''
+"""
 
-DATA_ONLY = '''{
+DATA_ONLY = """{
   activityTriggered {
     edges {
       node {
@@ -46,9 +47,9 @@ DATA_ONLY = '''{
     }
   }
 }
-'''
+"""
 
-META_ONLY = '''{
+META_ONLY = """{
   activityTriggered {
     edges {
       node {
@@ -62,9 +63,9 @@ META_ONLY = '''{
     }
   }
 }
-'''
+"""
 
-LINKS_ONLY = '''{
+LINKS_ONLY = """{
   activityTriggered {
     edges {
       node {
@@ -75,9 +76,9 @@ LINKS_ONLY = '''{
     }
   }
 }
-'''
+"""
 
-CONTEXT_LINK = '''{
+CONTEXT_LINK = """{
   activityTriggered {
     edges {
       node {
@@ -90,9 +91,9 @@ CONTEXT_LINK = '''{
     }
   }
 }
-'''
+"""
 
-CONTEXT_LINK_TO_ACTIVITY_TRIGGERED = '''{
+CONTEXT_LINK_TO_ACTIVITY_TRIGGERED = """{
   activityTriggered(search:"{'data.name': 'Activity triggered with activity context'}") {
     edges {
       node {
@@ -112,9 +113,9 @@ CONTEXT_LINK_TO_ACTIVITY_TRIGGERED = '''{
     }
   }
 }
-'''
+"""
 
-CONTEXT_LINK_TO_TEST_SUITE_STARTED = '''{
+CONTEXT_LINK_TO_TEST_SUITE_STARTED = """{
   activityTriggered(search:"{'data.name': 'Activity triggered with test suite context'}") {
     edges {
       node {
@@ -134,9 +135,9 @@ CONTEXT_LINK_TO_TEST_SUITE_STARTED = '''{
     }
   }
 }
-'''
+"""
 
-CAUSE_LINK = '''{
+CAUSE_LINK = """{
   activityTriggered(search:"{'data.name': 'Activity triggered with cause link'}") {
     edges {
       node {
@@ -156,9 +157,9 @@ CAUSE_LINK = '''{
     }
   }
 }
-'''
+"""
 
-FLOW_CONTEXT_LINK = '''{
+FLOW_CONTEXT_LINK = """{
   activityTriggered(search:"{'data.name': 'Activity triggered with flow context'}") {
     edges {
       node {
@@ -176,4 +177,4 @@ FLOW_CONTEXT_LINK = '''{
     }
   }
 }
-'''
+"""

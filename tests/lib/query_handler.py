@@ -13,18 +13,19 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""Graphql query handler."""
 from gql import Client, gql
 from gql.transport.requests import RequestsHTTPTransport
 
 
-class GraphQLQueryHandler():
-    """Create and send GraphQL queries."""
+class GraphQLQueryHandler:
+    """Create and send graphql queries."""
 
     __client = None
     __query = None
 
     def __init__(self, server):
-        """GraphQL query handler."""
+        """Graphql query handler."""
         self.transport_protocol = RequestsHTTPTransport
         self.server = server
 
@@ -35,7 +36,7 @@ class GraphQLQueryHandler():
 
     @property
     def client(self):
-        """GraphQL client."""
+        """Graphql client."""
         if self.__client is None:
             self.__client = Client(transport=self.transport)
         return self.__client
@@ -75,13 +76,13 @@ class GraphQLQueryHandler():
             if key in keys:
                 yield key, value
             if isinstance(value, dict):
-                for key, value in self.search(value, *keys):
-                    yield key, value
+                for dict_key, dict_value in self.search(value, *keys):
+                    yield dict_key, dict_value
             elif isinstance(value, (list, tuple)):
                 for item in value:
                     if isinstance(item, dict):
-                        for key, value in self.search(item, *keys):
-                            yield key, value
+                        for dict_key, dict_value in self.search(item, *keys):
+                            yield dict_key, dict_value
 
     def get_node(self, response, node):
         """Get a node from response.
@@ -93,8 +94,8 @@ class GraphQLQueryHandler():
         :return: node dictionary.
         :rtype: dict
         """
-        for node_name, node in self.search_for_nodes(response, node):
-            return node
+        for _, response_node in self.search_for_nodes(response, node):
+            return response_node
 
     def search_for_nodes(self, response, *nodes):
         """Search for nodes in a GraphQL response. Iterator.
@@ -125,6 +126,6 @@ class GraphQLQueryHandler():
         :return: Node name and node dictionary.
         :rtype: tuple
         """
-        for node_name, node in self.search(response, "node"):
+        for _, node in self.search(response, "node"):
             if node.get("__typename") in nodes:
                 yield node.get("__typename"), node

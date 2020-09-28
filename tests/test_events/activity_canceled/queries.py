@@ -13,8 +13,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""Activity canceled queries."""
 
-DATA_ONLY = '''{
+DATA_ONLY = """{
   activityCanceled {
     edges {
       node {
@@ -25,9 +26,9 @@ DATA_ONLY = '''{
     }
   }
 }
-'''
+"""
 
-META_ONLY = '''{
+META_ONLY = """{
   activityCanceled {
     edges {
       node {
@@ -41,9 +42,9 @@ META_ONLY = '''{
     }
   }
 }
-'''
+"""
 
-LINKS_ONLY = '''{
+LINKS_ONLY = """{
   activityCanceled {
     edges {
       node {
@@ -61,4 +62,4 @@ LINKS_ONLY = '''{
     }
   }
 }
-'''
+"""

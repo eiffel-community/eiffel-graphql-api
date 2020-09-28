@@ -14,28 +14,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # -*- coding: utf-8 -*-
-import pytest
+"""Activity canceled tests."""
 import logging
 from unittest import TestCase
-from .event import *
-from .queries import *
+
 from tests.lib.query_handler import GraphQLQueryHandler
 
+# pylint:disable=wildcard-import,unused-wildcard-import
+from .event import *
+from .queries import *
 
-logging.basicConfig(
-    level=logging.DEBUG
-)
 
+logging.basicConfig(level=logging.DEBUG)
 
 
 class TestActivityCanceled(TestCase):
+    """Tests for getting activity canceled from graphql API."""
 
     @classmethod
     def setUpClass(cls):
         cls.query_handler = GraphQLQueryHandler("http://127.0.0.1:12345/graphql")
         cls.events = [
             eiffel_activity_triggered_event(),
-            eiffel_activity_canceled_event()
+            eiffel_activity_canceled_event(),
         ]
         cls.logger = logging.getLogger("TestActivityCanceled")
 
@@ -78,15 +79,24 @@ class TestActivityCanceled(TestCase):
             1. Query 'links.ActivityExecution' from ActivityCanceled in Graphql.
             2. Verify that the returned event is an ActivityTriggered.
         """
-        self.logger.info("STEP: Query 'links.ActivityExecution' from ActivityCanceled in Graphql.")
+        self.logger.info(
+            "STEP: Query 'links.ActivityExecution' from ActivityCanceled in Graphql."
+        )
         self.logger.debug(LINKS_ONLY)
         response = self.query_handler.execute(LINKS_ONLY)
         self.logger.debug(pretty(response))
 
-        self.logger.info("STEP: Verify that the returned event is an ActivityTriggered.")
+        self.logger.info(
+            "STEP: Verify that the returned event is an ActivityTriggered."
+        )
         link_meta = self.query_handler.get_node(response, "meta")
-        self.assertDictEqual(link_meta, {"id": "693c3bac-10a6-4b77-82d7-430139195c1e",
-                                         "type": "EiffelActivityTriggeredEvent"})
+        self.assertDictEqual(
+            link_meta,
+            {
+                "id": "693c3bac-10a6-4b77-82d7-430139195c1e",
+                "type": "EiffelActivityTriggeredEvent",
+            },
+        )
 
     def test_activity_canceled_meta(self):
         """Test that it is possible to query 'meta' from activity canceled.

@@ -14,27 +14,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # -*- coding: utf-8 -*-
-import pytest
+"""Artifact published tests."""
 import logging
 from unittest import TestCase
-from .event import *
-from .queries import *
+
 from tests.lib.query_handler import GraphQLQueryHandler
 
+# pylint:disable=wildcard-import,unused-wildcard-import
+from .event import *
+from .queries import *
 
-logging.basicConfig(
-    level=logging.DEBUG
-)
+
+logging.basicConfig(level=logging.DEBUG)
 
 
 class TestArtifactPublished(TestCase):
+    """Tests for getting artifact published from graphql API."""
 
     @classmethod
     def setUpClass(cls):
         cls.query_handler = GraphQLQueryHandler("http://127.0.0.1:12345/graphql")
         cls.events = [
             eiffel_artifact_created_event(),
-            eiffel_artifact_published_event()
+            eiffel_artifact_published_event(),
         ]
         cls.logger = logging.getLogger("TestArtifactPublished")
 
@@ -68,15 +70,7 @@ class TestArtifactPublished(TestCase):
         self.assertIsInstance(data, dict)
         self.assertGreater(len(data), 0)
         self.assertDictEqual(
-            data,
-            {
-                "locations": [
-                    {
-                        "type": "OTHER",
-                        "uri": "http://anotherplace.com"
-                    }
-                ]
-            }
+            data, {"locations": [{"type": "OTHER", "uri": "http://anotherplace.com"}]}
         )
 
     def test_artifact_published_artifact_link(self):
@@ -89,15 +83,22 @@ class TestArtifactPublished(TestCase):
             1. Query 'links.Artifact' from ArtifactPublished in Graphql.
             2. Verify that the returned event is a ArtifactCreated.
         """
-        self.logger.info("STEP: Query 'links.Artifact' from ArtifactPublished in Graphql.")
+        self.logger.info(
+            "STEP: Query 'links.Artifact' from ArtifactPublished in Graphql."
+        )
         self.logger.debug(LINKS_ONLY)
         response = self.query_handler.execute(LINKS_ONLY)
         self.logger.debug(pretty(response))
 
         self.logger.info("STEP: Verify that the returned event is a ArtifactCreated.")
         link_meta = self.query_handler.get_node(response, "meta")
-        self.assertDictEqual(link_meta, {"id": "7c2b6c13-8dea-4c99-a337-0490269c374d",
-                                         "type": "EiffelArtifactCreatedEvent"})
+        self.assertDictEqual(
+            link_meta,
+            {
+                "id": "7c2b6c13-8dea-4c99-a337-0490269c374d",
+                "type": "EiffelArtifactCreatedEvent",
+            },
+        )
 
     def test_artifact_published_meta(self):
         """Test that it is possible to query 'meta' from artifact published.

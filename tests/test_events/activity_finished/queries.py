@@ -13,8 +13,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""Activity finished queries."""
 
-DATA_ONLY = '''{
+DATA_ONLY = """{
   activityFinished {
     edges {
       node {
@@ -32,9 +33,9 @@ DATA_ONLY = '''{
     }
   }
 }
-'''
+"""
 
-META_ONLY = '''{
+META_ONLY = """{
   activityFinished {
     edges {
       node {
@@ -48,9 +49,9 @@ META_ONLY = '''{
     }
   }
 }
-'''
+"""
 
-LINKS_ONLY = '''{
+LINKS_ONLY = """{
   activityFinished {
     edges {
       node {
@@ -68,4 +69,4 @@ LINKS_ONLY = '''{
     }
   }
 }
-'''
+"""
