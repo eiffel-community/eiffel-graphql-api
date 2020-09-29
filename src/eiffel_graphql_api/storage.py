@@ -96,6 +96,9 @@ def main(args):
         "ssl": ssl,
         "queue": os.getenv("RABBITMQ_QUEUE", None),
         "routing_key": "#",
+        "queue_params": {
+            "durable": os.getenv("RABBITMQ_DURABLE_QUEUE", "false") == "true"
+        },
     }
     subscriber = RabbitMQSubscriber(**data)
     subscriber.subscribe("*", insert_to_db, can_nack=True)
