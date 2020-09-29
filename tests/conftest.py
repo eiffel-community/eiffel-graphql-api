@@ -30,7 +30,7 @@ def mock_mongo():
     No database in place, guaranteeing that we'll start from a clean slate.
     """
     client = get_client(mock=True)
-    client.drop_database(os.getenv("DATABASE_NAME"))
+    client.drop_database(os.getenv("MONGODB_DATABASE"))
     yield get_database(mock=True)
 
 
@@ -48,8 +48,8 @@ def start_server(
     thread = threading.Thread(target=start)
     thread.daemon = True
     thread.start()
-    client.drop_database(os.getenv("DATABASE_NAME"))
+    client.drop_database(os.getenv("MONGODB_DATABASE"))
 
     def start_server_fin():  # pylint:disable=unused-variable
         """Drop the MongoDB database as a cleanup measure."""
-        client.drop_database(os.getenv("DATABASE_NAME"))
+        client.drop_database(os.getenv("MONGODB_DATABASE"))
