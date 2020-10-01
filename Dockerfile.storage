@@ -1,0 +1,17 @@
+FROM python:3.6.12-buster AS build
+
+COPY . /src
+WORKDIR /src
+RUN python3 setup.py bdist_wheel
+
+FROM python:3.6.12-slim-buster
+
+LABEL org.opencontainers.image.source=https://github.com/eiffel-community/eiffel-graphql-api
+LABEL org.opencontainers.image.authors=eiffel-graphql-api-maintainers@googlegroups.com
+LABEL org.opencontainers.image.licenses=Apache-2.0
+
+ENTRYPOINT ["python3", "-m", "eiffel_graphql_api.storage"]
+
+COPY --from=build /src/dist/*.whl /tmp
+# hadolint ignore=DL3013
+RUN pip3 install --no-cache-dir /tmp/*.whl

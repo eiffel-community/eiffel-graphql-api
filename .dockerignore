@@ -1,0 +1,10 @@
+.eggs/
+.github/
+.idea/
+.tox/
+build/
+dist/
+docs/
+htmlcov/
+sdist/
+tests/
