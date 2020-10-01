@@ -17,8 +17,9 @@
 import argparse
 import logging
 import os
+import signal
 import sys
-import time
+import threading
 
 from eiffellib.subscribers.rabbitmq_subscriber import RabbitMQSubscriber
 
@@ -26,6 +27,7 @@ from eiffel_graphql_api import __version__
 from eiffel_graphql_api.graphql.db.database import insert_to_db
 
 LOGGER = logging.getLogger(__name__)
+SHUTDOWN_EVENT = threading.Event()
 
 # Set environment variables from rabbitmq secrets in a kubernetes cluster.
 if os.path.isfile("/etc/rabbitmq/password"):
@@ -76,6 +78,16 @@ def setup_logging(loglevel):
     )
 
 
+def sighandler_quit(signo, _stack_frame):
+    """Signal handler that shuts down the process.
+
+    :param signo: The signal caught.
+    :type signo: int
+    """
+    LOGGER.info("Signal %d received, shutting down", signo)
+    SHUTDOWN_EVENT.set()
+
+
 def main(args):
     """Start GraphQL storage tool, connect to MongoDB and subscribe to Eiffel.
 
@@ -84,6 +96,11 @@ def main(args):
     """
     args = parse_args(args)
     setup_logging(args.loglevel)
+
+    # For some reason the SIGTERM signal gets lost when consuming from RabbitMQ,
+    # but things's are okay if we add an explicit SIGTERM handler that triggers
+    # the shutdown.
+    signal.signal(signal.SIGTERM, sighandler_quit)
 
     ssl = os.getenv("RABBITMQ_SSL", "false") == "true"
     data = {
@@ -104,8 +121,9 @@ def main(args):
     subscriber.subscribe("*", insert_to_db, can_nack=True)
     subscriber.start()
 
-    while True:
-        time.sleep(0.1)
+    SHUTDOWN_EVENT.wait()
+    subscriber.stop()
+    subscriber.wait_close()
 
 
 def run():
