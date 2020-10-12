@@ -2,6 +2,9 @@
 Eiffel Graphql API
 ##################
 
+.. image:: https://img.shields.io/badge/Stage-Sandbox-yellow.svg
+  :target: https://github.com/eiffel-community/community/blob/master/PROJECT_LIFECYCLE.md#stage-sandbox
+
 Eiffel GraphQL API and storage solution.
 
 Description
