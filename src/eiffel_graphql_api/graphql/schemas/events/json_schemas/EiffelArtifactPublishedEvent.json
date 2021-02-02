@@ -15,8 +15,8 @@
         },
         "version": {
           "type": "string",
-          "enum": [ "3.0.0" ],
-          "default": "3.0.0"
+          "enum": [ "3.1.0" ],
+          "default": "3.1.0"
         },
         "time": {
           "type": "integer"
@@ -117,6 +117,9 @@
           "items": {
             "type": "object",
             "properties": {
+              "name": {
+                "type": "string"
+              },
               "type": {
                 "type": "string",
                 "enum": [
