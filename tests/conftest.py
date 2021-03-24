@@ -21,10 +21,10 @@ import time
 import logging
 import pytest
 from requests.exceptions import HTTPError
-from tests.lib.query_handler import GraphQLQueryHandler
 from eiffel_graphql_api.graphql.api import APP
 from eiffel_graphql_api.graphql.db.database import get_database
 from eiffel_graphql_api.graphql.db.database import get_client
+from tests.lib.query_handler import GraphQLQueryHandler
 
 
 logging.basicConfig(level=logging.DEBUG)
