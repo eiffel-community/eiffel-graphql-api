@@ -115,15 +115,11 @@ def insert_to_db(event, _=None):
     try:
         database = get_database()
         collection = database[event.meta.type]
-        collection.create_index([("meta.id", pymongo.ASCENDING)])
-        collection.create_index([("links.target", pymongo.ASCENDING)])
         doc = event.json
         doc["_id"] = event.meta.event_id
         collection.insert_one(doc)
     except pymongo.errors.DuplicateKeyError:
-        LOGGER.warning(
-            "Event already exists in the database, " "skipping: %r", event.json
-        )
+        LOGGER.warning("Event already exists in the database, skipping: %r", event.json)
         return True
     except pymongo.errors.ConnectionFailure as exception:
         LOGGER.warning("%r", exception)
