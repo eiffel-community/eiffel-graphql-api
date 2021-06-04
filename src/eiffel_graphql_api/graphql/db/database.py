@@ -119,9 +119,7 @@ def insert_to_db(event, _=None):
         doc["_id"] = event.meta.event_id
         collection.insert_one(doc)
     except pymongo.errors.DuplicateKeyError:
-        LOGGER.warning(
-            "Event already exists in the database, skipping: %r", event.json
-        )
+        LOGGER.warning("Event already exists in the database, skipping: %r", event.json)
         return True
     except pymongo.errors.ConnectionFailure as exception:
         LOGGER.warning("%r", exception)
