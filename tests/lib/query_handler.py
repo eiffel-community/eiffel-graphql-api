@@ -22,7 +22,6 @@ class GraphQLQueryHandler:
     """Create and send graphql queries."""
 
     __client = None
-    __query = None
 
     def __init__(self, server):
         """Graphql query handler."""
