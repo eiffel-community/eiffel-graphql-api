@@ -52,7 +52,7 @@ def load(name):
     :return: Json dictionary, starting from the properties key.
     :rtype: dict
     """
-    with open(os.path.join(BASE_JSON, name)) as json_file:
+    with open(os.path.join(BASE_JSON, name), encoding="utf-8") as json_file:
         data = json.load(json_file)
     return data.get("properties")
 
@@ -204,7 +204,7 @@ def key_names(key, override_name):
     # to change. By capitalizing just the first index and then attaching the rest
     # we achieve that.
     # Converts 'dataKey' to 'DataKey'.
-    cls_name = "{}{}".format(key[0].capitalize(), key[1:])
+    cls_name = f"{key[0].capitalize()}{key[1:]}"
     attribute_name = convert(key)
     return key, data_key, cls_name, attribute_name
 
@@ -236,7 +236,7 @@ def generate_array(key, value, override_name, data_dict):
     json_schema_to_graphql(cls_name, value, dictionary, override_name)
     obj = create_object_type(cls_name, dictionary, key)
     data_dict[attribute_name] = graphene.List(obj)
-    data_dict["resolve_{}".format(attribute_name)] = resolvers(graphene.List, data_key)
+    data_dict[f"resolve_{attribute_name}"] = resolvers(graphene.List, data_key)
 
 
 def generate_object(key, value, override_name, data_dict):
@@ -265,7 +265,7 @@ def generate_object(key, value, override_name, data_dict):
     json_schema_to_graphql(cls_name, value.get("properties"), dictionary, override_name)
     obj = create_object_type(cls_name, dictionary)
     data_dict[attribute_name] = graphene.Field(obj)
-    data_dict["resolve_{}".format(attribute_name)] = resolvers(graphene.Field, data_key)
+    data_dict[f"resolve_{attribute_name}"] = resolvers(graphene.Field, data_key)
 
 
 def generate_simple(key, graphene_type, override_name, data_dict):
@@ -287,7 +287,7 @@ def generate_simple(key, graphene_type, override_name, data_dict):
     """
     key, _, __, attribute_name = key_names(key, override_name)
     data_dict[attribute_name] = graphene_type()
-    data_dict["resolve_{}".format(attribute_name)] = resolvers(graphene_type, key)
+    data_dict[f"resolve_{attribute_name}"] = resolvers(graphene_type, key)
 
 
 def json_schema_to_graphql(

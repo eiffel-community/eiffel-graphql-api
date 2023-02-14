@@ -29,7 +29,7 @@ class EiffelConnectionField(relay.ConnectionField):
 
     def __init__(self, field):
         """Initialize schema fields."""
-        field = "eiffel_graphql_api.graphql.schemas.events.{}".format(field)
+        field = f"eiffel_graphql_api.graphql.schemas.events.{field}"
         # pylint:disable=super-with-arguments
         super(EiffelConnectionField, self).__init__(field, search=graphene.String())
 
@@ -58,7 +58,7 @@ class BaseQuery(graphene.ObjectType):
         """Generically resolve a meta node for each eiffel object type."""
         # pylint:disable=protected-access
         obj = info.return_type.graphene_type._meta.node
-        collection = "Eiffel{}Event".format(obj)
+        collection = f"Eiffel{obj}Event"
 
         search = "{}" if search is None else search
         search = cls._clean_query(search)
@@ -82,8 +82,8 @@ for ROOT, _, FILES in os.walk(BASE_JSON):
         NAME = NAME.replace("Eiffel", "")
         NAME = NAME.replace("Event", "")
         NAME = NAME.replace(".json", "")
-        CONNECTION_NAME = "{}Connection".format(NAME)
-        RESOLVE_NAME = "resolve_{}".format(convert(NAME))
+        CONNECTION_NAME = f"{NAME}Connection"
+        RESOLVE_NAME = f"resolve_{convert(NAME)}"
         SNAKE_NAME = convert(NAME)
         QUERY[SNAKE_NAME] = EiffelConnectionField(CONNECTION_NAME)
         QUERY[RESOLVE_NAME] = BaseQuery.generic_resolve
