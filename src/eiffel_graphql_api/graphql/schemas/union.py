@@ -1,4 +1,4 @@
-# Copyright 2019-2020 Axis Communications AB.
+# Copyright 2019-2023 Axis Communications AB.
 #
 # For a full list of individual contributors, please see the commit history.
 #
@@ -106,6 +106,20 @@ class EiffelSubjectUnion(graphene.Union):  # pylint: disable=too-few-public-meth
         )
 
 
+class EiffelRuntimeEnvironmentLink(
+    graphene.Union
+):  # pylint: disable=too-few-public-methods
+    """Runtime environment union."""
+
+    class Meta:  # pylint: disable=too-few-public-methods
+        """Possible response object types."""
+
+        types = (
+            CompositionDefined,
+            ArtifactCreated,
+        )
+
+
 class EiffelEventUnion(graphene.Union):  # pylint: disable=too-few-public-methods
     """Base event union."""
 
@@ -170,8 +184,10 @@ class EiffelLinkUnion(graphene.Union):  # pylint: disable=too-few-public-methods
             Base,
             SourceCreatedPreviousVersion,
             PartiallyResolvedIssue,
+            Precursor,
             ResolvedIssue,
             DeresolvedIssue,
+            RuntimeEnvironment,
             SourceChange,
             SourceSubmittedPreviousVersion,
             TestCaseExecution,

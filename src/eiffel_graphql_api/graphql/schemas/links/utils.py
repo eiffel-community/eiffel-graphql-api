@@ -1,4 +1,4 @@
-# Copyright 2019-2020 Axis Communications AB.
+# Copyright 2019-2023 Axis Communications AB.
 #
 # For a full list of individual contributors, please see the commit history.
 #
@@ -27,6 +27,8 @@ from .flow_context import FlowContext
 from .issues import *
 from .iut import IUT
 from .modified_announcement import ModifiedAnnouncement
+from .precursor import Precursor
+from .runtime_environment import RuntimeEnvironment
 from .source_change_base import *
 from .subject import Subject
 from .tercc import Tercc
@@ -34,12 +36,15 @@ from .test_case_execution import *
 from .test_suite_execution import *
 from .verification_basis import VerificationBasis
 
+
 LINKS = {
     "CONTEXT": Context,
     "FLOW_CONTEXT": FlowContext,
     "CAUSE": Cause,
     "ACTIVITY_EXECUTION": ActivityExecution,
+    "PRECURSOR": Precursor,
     "PREVIOUS_ACTIVITY_EXECUTION": PreviousActivityExecution,
+    "RUNTIME_ENVIRONMENT": RuntimeEnvironment,
     "MODIFIED_ANNOUNCEMENT": ModifiedAnnouncement,
     "COMPOSITION": Composition,
     "PREVIOUS_VERSION": {
