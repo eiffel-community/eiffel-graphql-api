@@ -91,8 +91,8 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = u"eiffel-graphql-api"
-copyright = u"2019, Axis Communications AB"
+project = "eiffel-graphql-api"
+copyright = "2019, Axis Communications AB"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -240,7 +240,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-    ("index", "user_guide.tex", u"Eiffel-graphql Documentation", u"", "manual"),
+    ("index", "user_guide.tex", "Eiffel-graphql Documentation", "", "manual"),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of

@@ -31,10 +31,10 @@ SHUTDOWN_EVENT = threading.Event()
 
 # Set environment variables from rabbitmq secrets in a kubernetes cluster.
 if os.path.isfile("/etc/rabbitmq/password"):
-    with open("/etc/rabbitmq/password", "r") as password:
+    with open("/etc/rabbitmq/password", "r", encoding="utf-8") as password:
         os.environ["RABBITMQ_PASSWORD"] = password.read()
 if os.path.isfile("/etc/rabbitmq/username"):
-    with open("/etc/rabbitmq/username", "r") as username:
+    with open("/etc/rabbitmq/username", "r", encoding="utf-8") as username:
         os.environ["RABBITMQ_USERNAME"] = username.read()
 
 
@@ -52,7 +52,7 @@ def parse_args(args):
     parser.add_argument(
         "--version",
         action="version",
-        version="eiffel-graphql-storage {ver}".format(ver=__version__),
+        version=f"eiffel-graphql-storage {__version__}",
     )
     parser.add_argument(
         "-v",

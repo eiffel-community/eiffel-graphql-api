@@ -110,10 +110,9 @@ class TestActivityFinished(TestCase):
                     self.assertEqual(log.get("uri"), uri)
                     break
             else:
+                logs = data.get("activityPersistentLogs")
                 raise AssertionError(
-                    "{{'name': {}, 'uri': {}}} not in liveLogs: {}".format(
-                        name, uri, data.get("activityPersistentLogs")
-                    )
+                    f"{{'name': {name}, 'uri': {uri}}} not in liveLogs: {logs}"
                 )
 
     def test_activity_finished_link(self):
