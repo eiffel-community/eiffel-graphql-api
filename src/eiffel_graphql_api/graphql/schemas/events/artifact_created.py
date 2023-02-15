@@ -1,4 +1,4 @@
-# Copyright 2019-2020 Axis Communications AB.
+# Copyright 2019-2023 Axis Communications AB.
 #
 # For a full list of individual contributors, please see the commit history.
 #
@@ -28,7 +28,10 @@ class ArtifactCreated(EiffelObjectType):
     data = json_schema_to_graphql(
         "ArtifactCreatedData",
         load("EiffelArtifactCreatedEvent.json").get("data").get("properties"),
-        override_name={"tags": "artifactTags"},
+        override_name={
+            "tags": "artifactTags",
+            "integrityProtection": "artifactIntegrityProtection",
+        },
     )
     mongo = None
 

@@ -11,12 +11,16 @@
         },
         "type": {
           "type": "string",
-          "enum": ["EiffelActivityTriggeredEvent"]
+          "enum": [
+            "EiffelActivityTriggeredEvent"
+          ]
         },
         "version": {
           "type": "string",
-          "enum": [ "3.0.0" ],
-          "default": "3.0.0"
+          "enum": [
+            "4.2.0"
+          ],
+          "default": "4.2.0"
         },
         "time": {
           "type": "integer"
@@ -52,24 +56,69 @@
         "security": {
           "type": "object",
           "properties": {
-            "sdm": {
+            "authorIdentity": {
+              "type": "string"
+            },
+            "integrityProtection": {
               "type": "object",
               "properties": {
-                "authorIdentity": {
+                "signature": {
                   "type": "string"
                 },
-                "encryptedDigest": {
+                "alg": {
+                  "type": "string",
+                  "enum": [
+                    "HS256",
+                    "HS384",
+                    "HS512",
+                    "RS256",
+                    "RS384",
+                    "RS512",
+                    "ES256",
+                    "ES384",
+                    "ES512",
+                    "PS256",
+                    "PS384",
+                    "PS512"
+                  ]
+                },
+                "publicKey": {
                   "type": "string"
                 }
               },
               "required": [
-                "authorIdentity",
-                "encryptedDigest"
+                "signature",
+                "alg"
               ],
               "additionalProperties": false
+            },
+            "sequenceProtection": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "sequenceName": {
+                    "type": "string"
+                  },
+                  "position": {
+                    "type": "integer"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "sequenceName",
+                  "position"
+                ]
+              }
             }
           },
-          "additionalProperties": false
+          "additionalProperties": false,
+          "required": [
+            "authorIdentity"
+          ]
+        },
+        "schemaUri": {
+          "type": "string"
         }
       },
       "required": [
@@ -134,8 +183,7 @@
               "key": {
                 "type": "string"
               },
-              "value": {
-              }
+              "value": {}
             },
             "required": [
               "key",
@@ -161,6 +209,9 @@
           "target": {
             "type": "string",
             "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          },
+          "domainId": {
+            "type": "string"
           }
         },
         "required": [

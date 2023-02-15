@@ -1,4 +1,4 @@
-# Copyright 2019-2020 Axis Communications AB.
+# Copyright 2019-2023 Axis Communications AB.
 #
 # For a full list of individual contributors, please see the commit history.
 #
@@ -26,6 +26,8 @@ from .flow_context import FlowContext
 from .issues import *
 from .iut import IUT
 from .modified_announcement import ModifiedAnnouncement
+from .precursor import Precursor
+from .runtime_environment import RuntimeEnvironment
 from .source_change_base import *
 from .subject import Subject
 from .tercc import Tercc

@@ -1,4 +1,4 @@
-# Copyright 2019-2020 Axis Communications AB.
+# Copyright 2019-2023 Axis Communications AB.
 #
 # For a full list of individual contributors, please see the commit history.
 #
@@ -30,6 +30,7 @@ class TestSuiteStarted(EiffelObjectType):
         load("EiffelTestSuiteStartedEvent.json").get("data").get("properties"),
         override_name={
             "liveLogs": "testSuiteLiveLogs",
+            "tags": "testSuiteLiveLogTags",
             "categories": "testSuiteCategories",
         },
     )
