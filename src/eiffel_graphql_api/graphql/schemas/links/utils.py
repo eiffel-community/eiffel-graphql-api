@@ -31,7 +31,7 @@ from .precursor import Precursor
 from .runtime_environment import RuntimeEnvironment
 from .source_change_base import *
 from .subject import Subject
-from .tercc import Tercc
+from .terc import Terc
 from .test_case_execution import *
 from .test_suite_execution import *
 from .verification_basis import VerificationBasis
@@ -72,5 +72,5 @@ LINKS = {
     "CHANGE": SourceChange,
     "TEST_CASE_EXECUTION": TestCaseExecution,
     "TEST_SUITE_EXECUTION": TestSuiteExecution,
-    "TERCC": Tercc,
+    "TERC": Terc,
 }

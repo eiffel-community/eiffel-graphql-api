@@ -13,7 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Resolve tercc link."""
+"""Resolve terc link."""
 import graphene
 
 from eiffel_graphql_api.graphql.schemas.events import (
@@ -23,8 +23,8 @@ from eiffel_graphql_api.graphql.schemas.events import (
 from ..utils import find_one
 
 
-class Tercc(graphene.ObjectType):
-    """Tercc link."""
+class Terc(graphene.ObjectType):
+    """Terc link."""
 
     test_execution_recipe_collection_created = graphene.Field(
         TestExecutionRecipeCollectionCreated
@@ -36,7 +36,7 @@ class Tercc(graphene.ObjectType):
         self.link = link
 
     def resolve_test_execution_recipe_collection_created(self, _):
-        """Resolve tercc link."""
+        """Resolve terc link."""
         from ..union import NotFound  # pylint:disable=import-outside-toplevel
 
         event = find_one(
