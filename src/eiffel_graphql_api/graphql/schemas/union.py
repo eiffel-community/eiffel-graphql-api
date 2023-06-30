@@ -192,7 +192,7 @@ class EiffelLinkUnion(graphene.Union):  # pylint: disable=too-few-public-methods
             SourceSubmittedPreviousVersion,
             TestCaseExecution,
             TestSuiteExecution,
-            Tercc,
+            Terc,
         )
 
 

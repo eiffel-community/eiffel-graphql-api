@@ -30,7 +30,7 @@ from .precursor import Precursor
 from .runtime_environment import RuntimeEnvironment
 from .source_change_base import *
 from .subject import Subject
-from .tercc import Tercc
+from .terc import Terc
 from .test_case_execution import *
 from .test_suite_execution import *
 from .verification_basis import VerificationBasis
