@@ -1,10 +1,10 @@
-FROM python:3.6.12-buster AS build
+FROM python:3.11.5 AS build
 
 COPY . /src
 WORKDIR /src
 RUN python3 setup.py bdist_wheel
 
-FROM python:3.6.12-slim-buster
+FROM python:3.11.5-slim
 
 LABEL org.opencontainers.image.source=https://github.com/eiffel-community/eiffel-graphql-api
 LABEL org.opencontainers.image.authors=eiffel-graphql-api-maintainers@googlegroups.com

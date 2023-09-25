@@ -54,7 +54,7 @@ def wait_for_webserver_connection():
     timeout = time.time() + 30
     while time.time() < timeout:
         try:
-            query_handler.execute("{nothing}")
+            query_handler.execute("{ __schema { description } }")
             LOGGER.info("Up and running")
             return
         except HTTPError:  # BadRequest means the webserver came up.

@@ -36,7 +36,7 @@ class BigInt(Scalar):
     @staticmethod
     def parse_literal(node):
         """Parse node literal and convert to float if too large."""
-        if isinstance(node, ast.IntValue):
+        if isinstance(node, ast.IntValueNode):
             num = int(node.value)
             if num > MAX_INT or num < MIN_INT:
                 return float(int(num))

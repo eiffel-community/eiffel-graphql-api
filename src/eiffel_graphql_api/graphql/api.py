@@ -15,7 +15,7 @@
 # limitations under the License.
 """Eiffel GraphQL Flask API APP."""
 from flask import Flask
-from flask_graphql import GraphQLView
+from graphql_server.flask.graphqlview import GraphQLView
 
 from .schemas.schema import SCHEMA
 

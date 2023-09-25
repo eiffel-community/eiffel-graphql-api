@@ -43,9 +43,45 @@ class Artifact(graphene.ObjectType):
         return ArtifactCreated(event)
 
 
-class ReusedArtifact(Artifact):
+class ReusedArtifact(graphene.ObjectType):
     """Reused artifact link."""
 
+    artifact_created = graphene.Field(ArtifactCreated)
 
-class ArtifactPreviousVersion(Artifact):
+    def __init__(self, link):
+        """Initialize link."""
+        # pylint:disable=super-init-not-called
+        self.link = link
+
+    def resolve_artifact_created(self, _):
+        """Resolve artifact created link."""
+        from ..union import NotFound  # pylint:disable=import-outside-toplevel
+
+        event = find_one(
+            "EiffelArtifactCreatedEvent", {"meta.id": self.link.get("target")}
+        )
+        if event is None:
+            return NotFound(self.link, "Could not find event in database.")
+        return ArtifactCreated(event)
+
+
+class ArtifactPreviousVersion(graphene.ObjectType):
     """Previous artifact version link."""
+
+    artifact_created = graphene.Field(ArtifactCreated)
+
+    def __init__(self, link):
+        """Initialize link."""
+        # pylint:disable=super-init-not-called
+        self.link = link
+
+    def resolve_artifact_created(self, _):
+        """Resolve artifact created link."""
+        from ..union import NotFound  # pylint:disable=import-outside-toplevel
+
+        event = find_one(
+            "EiffelArtifactCreatedEvent", {"meta.id": self.link.get("target")}
+        )
+        if event is None:
+            return NotFound(self.link, "Could not find event in database.")
+        return ArtifactCreated(event)
