@@ -44,7 +44,7 @@ def parse_args(args):
     :param args: Command line parameters as list of strings.
     :type args: list
     :return: Command line parameters namespace.
-    :rtype: :obj:`argparse.Namespace
+    :rtype: :obj:`argparse.Namespace`
     """
     parser = argparse.ArgumentParser(
         description="Tool for storing eiffel events in a Mongo database."

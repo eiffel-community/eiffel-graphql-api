@@ -1,0 +1,44 @@
+networks:
+  eiffel-graphql-api-network:
+    name: "eiffel-graphql-api-network"
+
+services:
+  mongodb:
+    image: "mongodb/mongodb-community-server"
+    env_file:
+      - development.env
+    networks:
+      - eiffel-graphql-api-network
+
+  rabbitmq:
+    image: "rabbitmq:3-management-alpine"
+    networks:
+      - eiffel-graphql-api-network
+    ports:
+      - 15672:15672
+      - 5672:5672
+
+  api:
+    build:
+      context: ../
+      dockerfile: Dockerfile.graphql-api
+    ports:
+      - 5000:5000
+    networks:
+      - eiffel-graphql-api-network
+    env_file:
+      - development.env
+    depends_on:
+      - mongodb
+
+  storage:
+    build:
+      context: ../
+      dockerfile: Dockerfile.storage
+    networks:
+      - eiffel-graphql-api-network
+    env_file:
+      - development.env
+    depends_on:
+      - rabbitmq
+      - mongodb

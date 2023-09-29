@@ -15,14 +15,14 @@
 # numpy==1.13.3
 # scipy==1.0
 #
-eiffellib==1.2.0
-requests==2.22.0
+eiffellib[rabbitmq]==2.4
+requests==2.31.0
 pymongo[srv]==3.12.0
-graphql-core==2.2.1
-gql==0.1.0
-Flask==1.1.1
-Flask-GraphQL==2.0.0
-graphene==2.1.8
-gunicorn==20.0.4
-greenlet==0.4.14
-gevent==1.4.0
+graphql-core==3.2.3
+gql[requests]==3.4.1
+Flask==2.3.3
+graphql-server==3.0.0b6
+graphene==3.3
+gunicorn==21.2.0
+greenlet==2.0.2
+gevent==22.10.2
