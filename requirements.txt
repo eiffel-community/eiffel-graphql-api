@@ -16,7 +16,7 @@
 # scipy==1.0
 #
 eiffellib[rabbitmq]==2.4
-requests==2.31.0
+requests==2.32.0
 pymongo[srv]==3.12.0
 graphql-core==3.2.3
 gql[requests]==3.4.1
