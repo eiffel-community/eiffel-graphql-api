@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """Eiffel source change links."""
+
 import graphene
 
 from eiffel_graphql_api.graphql.schemas.events import (
@@ -68,9 +69,45 @@ class SourceChange(graphene.ObjectType):
         return SourceChangeCreated(event)
 
 
-class SourceSubmittedPreviousVersion(Base):
+class SourceSubmittedPreviousVersion(graphene.ObjectType):
     """Previous source submitted link."""
 
+    source_change_submitted = graphene.Field(SourceChangeSubmitted)
 
-class SourceCreatedPreviousVersion(SourceChange):
+    def __init__(self, link):
+        """Initialize link."""
+        # pylint:disable=super-init-not-called
+        self.link = link
+
+    def resolve_source_change_submitted(self, _):
+        """Resolve source change submitted link."""
+        from ..union import NotFound  # pylint:disable=import-outside-toplevel
+
+        event = find_one(
+            "EiffelSourceChangeSubmittedEvent", {"meta.id": self.link.get("target")}
+        )
+        if event is None:
+            return NotFound(self.link, "Could not find event in database.")
+        return SourceChangeSubmitted(event)
+
+
+class SourceCreatedPreviousVersion(graphene.ObjectType):
     """Previous source created link."""
+
+    source_change_created = graphene.Field(SourceChangeCreated)
+
+    def __init__(self, link):
+        """Initialize link."""
+        # pylint:disable=super-init-not-called
+        self.link = link
+
+    def resolve_source_change_created(self, _):
+        """Resolve source change created link."""
+        from ..union import NotFound  # pylint:disable=import-outside-toplevel
+
+        event = find_one(
+            "EiffelSourceChangeCreatedEvent", {"meta.id": self.link.get("target")}
+        )
+        if event is None:
+            return NotFound(self.link, "Could not find event in database.")
+        return SourceChangeCreated(event)
