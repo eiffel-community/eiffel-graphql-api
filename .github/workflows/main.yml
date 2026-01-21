@@ -24,7 +24,7 @@ jobs:
       - name: Install Tox
         run: pip install tox
       - name: Upgrade setuptools
-        run: pip install -U setuptools
+        run: pip install -U setuptools setuptools_scm[toml]
       - name: Run Tox
         run: tox
 
