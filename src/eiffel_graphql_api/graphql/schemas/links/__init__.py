@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """Eiffel links."""
+
 from .activity_execution import ActivityExecution, PreviousActivityExecution
 from .artifact import Artifact, ArtifactPreviousVersion, ReusedArtifact
 from .cause import Cause

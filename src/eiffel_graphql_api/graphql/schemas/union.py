@@ -17,6 +17,7 @@
 
 A union is an object type that can return one of several object types.
 """
+
 # pylint: disable=wildcard-import, unused-wildcard-import
 import graphene
 from graphene import relay

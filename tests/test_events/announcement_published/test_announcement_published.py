@@ -15,6 +15,7 @@
 # limitations under the License.
 # -*- coding: utf-8 -*-
 """Announcement published tests."""
+
 import logging
 from unittest import TestCase
 
@@ -23,7 +24,6 @@ from tests.lib.query_handler import GraphQLQueryHandler
 # pylint:disable=wildcard-import,unused-wildcard-import
 from .event import *
 from .queries import *
-
 
 logging.basicConfig(level=logging.DEBUG)
 

@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """DB Storage tool for eiffel graphql API."""
+
 import argparse
 import logging
 import os

@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """Eiffel iut link."""
+
 import graphene
 
 from ..utils import find_type, search
