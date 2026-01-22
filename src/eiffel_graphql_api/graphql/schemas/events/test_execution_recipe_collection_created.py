@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """Eiffel test execution recipe collection created."""
+
 import graphene
 
 from ..base import EiffelObjectType

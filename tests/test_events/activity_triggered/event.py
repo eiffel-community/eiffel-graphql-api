@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """Activity triggered events."""
+
 # Used for local imports pylint:disable=unused-import
 from tests.lib.events import insert, remove, drop, pretty
 

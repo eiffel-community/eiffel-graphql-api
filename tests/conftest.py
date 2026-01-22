@@ -15,6 +15,7 @@
 # limitations under the License.
 # -*- coding: utf-8 -*-
 """Pytest configuration."""
+
 import os
 import threading
 import time
@@ -25,7 +26,6 @@ from eiffel_graphql_api.graphql.api import APP
 from eiffel_graphql_api.graphql.db.database import get_database
 from eiffel_graphql_api.graphql.db.database import get_client
 from tests.lib.query_handler import GraphQLQueryHandler
-
 
 logging.basicConfig(level=logging.DEBUG)
 LOGGER = logging.getLogger(__name__)

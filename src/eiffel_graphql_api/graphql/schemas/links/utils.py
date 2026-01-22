@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """Eiffel link table, connecting eiffel link names with objects."""
+
 # pylint: disable=wildcard-import, unused-wildcard-import
 from .activity_execution import ActivityExecution, PreviousActivityExecution
 from .artifact import Artifact, ArtifactPreviousVersion, ReusedArtifact
@@ -35,7 +36,6 @@ from .terc import Terc
 from .test_case_execution import *
 from .test_suite_execution import *
 from .verification_basis import VerificationBasis
-
 
 LINKS = {
     "CONTEXT": Context,

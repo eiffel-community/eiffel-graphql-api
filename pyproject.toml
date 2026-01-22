@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>72", "wheel", "setuptools_scm[toml]>=8"]
+requires = ["setuptools>80", "wheel", "setuptools_scm[toml]>=9"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -14,19 +14,20 @@ classifiers = [
     "Development Status :: 4 - Beta",
     "Programming Language :: Python :: 3"
 ]
-requires-python = ">=3.11,<3.12"
+requires-python = ">= 3.14"
 dependencies = [
     "eiffellib[rabbitmq]==2.4.1",
-    "requests==2.32.0",
-    "pymongo[srv]==3.12.0",
-    "graphql-core==3.2.3",
-    "gql[requests]==3.4.1",
-    "Flask==2.3.3",
-    "graphql-server==3.0.0b6",
-    "graphene==3.3",
-    "gunicorn==22.0.0",
-    "greenlet==2.0.2",
-    "gevent==23.9.0"
+    "requests==2.32.5",
+    "pymongo==4.16.0",
+    "graphql-core==3.2.7",
+    "gql[requests]==4.0.0",
+    "Flask==3.1.2",
+    # graphql-server==3.0.0 blocked by https://github.com/graphql-python/graphql-server/issues/137
+    "graphql-server==3.0.0b7",
+    "graphene==3.4.3",
+    "gunicorn==23.0.0",
+    "greenlet==3.3.0",
+    "gevent==25.9.1"
 ]
 
 [project.urls]

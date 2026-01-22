@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """Base schemas and schema generation."""
+
 import json
 import os
 
@@ -54,7 +55,7 @@ class BaseQuery(graphene.ObjectType):
     @classmethod
     def generic_resolve(
         cls, parent, info, last=None, first=None, search=None, **_
-    ):  # pylint:disable=too-many-arguments, unused-argument
+    ):  # pylint:disable=too-many-positional-arguments, unused-argument, too-many-arguments
         """Generically resolve a meta node for each eiffel object type."""
         # pylint:disable=protected-access
         obj = info.return_type.graphene_type._meta.node
@@ -82,8 +83,8 @@ for ROOT, _, FILES in os.walk(BASE_JSON):
         NAME = NAME.replace("Eiffel", "")
         NAME = NAME.replace("Event", "")
         NAME = NAME.replace(".json", "")
-        CONNECTION_NAME = f"{NAME}Connection"
-        RESOLVE_NAME = f"resolve_{convert(NAME)}"
+        CONNECTION_NAME = f"{NAME}Connection"  # pylint:disable=invalid-name
+        RESOLVE_NAME = f"resolve_{convert(NAME)}"  # pylint:disable=invalid-name
         SNAKE_NAME = convert(NAME)
         QUERY[SNAKE_NAME] = EiffelConnectionField(CONNECTION_NAME)
         QUERY[RESOLVE_NAME] = BaseQuery.generic_resolve

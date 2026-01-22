@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """Eiffel precursor links."""
+
 import graphene
 
 from eiffel_graphql_api.graphql.schemas.events import ActivityTriggered

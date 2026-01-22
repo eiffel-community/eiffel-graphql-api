@@ -15,7 +15,6 @@
 # limitations under the License.
 """Test artifact reused queries."""
 
-
 META_ONLY = """{
   artifactReused {
     edges {

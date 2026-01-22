@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """WSGI module."""
+
 from .graphql.api import APP
 
 if __name__ == "__main__":

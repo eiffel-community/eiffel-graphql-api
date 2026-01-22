@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """Generic utilities for Eiffel GraphQL API."""
+
 import json
 import os
 import re

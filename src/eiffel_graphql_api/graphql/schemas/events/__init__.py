@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """Eiffel event objects and connecting Eiffel event names with objects."""
+
 from .activity_canceled import ActivityCanceled, ActivityCanceledConnection
 from .activity_finished import ActivityFinished, ActivityFinishedConnection
 from .activity_started import ActivityStarted, ActivityStartedConnection

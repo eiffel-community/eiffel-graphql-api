@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """Eiffel GraphQL Flask API APP."""
+
 from flask import Flask
 from graphql_server.flask.graphqlview import GraphQLView
 

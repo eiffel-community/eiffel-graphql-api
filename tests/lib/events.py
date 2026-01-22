@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """Event helpers."""
+
 import os
 import json
 from eiffel_graphql_api.graphql.db.database import get_database, get_client

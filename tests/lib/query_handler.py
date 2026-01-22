@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """Graphql query handler."""
+
 from gql import Client, gql
 from gql.transport.requests import RequestsHTTPTransport
 
